@@ -56,7 +56,7 @@ async function precheck() {
     await saveState('precheck.json', { checkedAt: new Date().toISOString(), scan, pending: pending.counts.pending, stalled });
     if (running) { console.log('An existing support run still owns the lease.'); return 1; }
     if (pending.counts.pending || stalled || scan.errors.length || pending.automation.lastError) { console.log(JSON.stringify({ pending: pending.counts.pending, stalled, scanErrors: scan.errors.length })); return 0; }
-    console.log('No unhandled customer mail. Dashboard heartbeat refreshed.'); return 1;
+    console.log(`No automatic work due; needs_owner=${pending.counts.needs_owner}, waiting_customer=${pending.counts.waiting_customer}. Dashboard heartbeat refreshed.`); return 1;
   } catch (error) {
     const signature = String(error.message).slice(0, 1000);
     await saveState('precheck.json', { checkedAt: new Date().toISOString(), error: signature });

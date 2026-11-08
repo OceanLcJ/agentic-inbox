@@ -7,6 +7,7 @@ import {
   SupportUpdateSchema,
   SUPPORT_STATUSES,
 } from "../../shared/support";
+import { syncSupportSources } from "../lib/support-source";
 import { supportDesk } from "../lib/support-client";
 import type { Env } from "../types";
 import {
@@ -150,6 +151,14 @@ supportApp.post("/scan", async (c) => {
       }),
     );
   }
+  let sourceRequests = 0;
+  try {
+    const source = await syncSupportSources(c.env);
+    sourceRequests = source.imported;
+    errors.push(...source.errors);
+  } catch (error) {
+    errors.push(error instanceof Error ? error.message : "网站表单同步失败");
+  }
   const now = new Date().toISOString();
   await supportDesk(c.env).updateAutomation({
     lastScanAt: now,
@@ -159,6 +168,7 @@ supportApp.post("/scan", async (c) => {
     scanned,
     mailboxes: mailboxes.length,
     importedThreads: imported,
+    sourceRequests,
     errors,
     scannedAt: now,
   });

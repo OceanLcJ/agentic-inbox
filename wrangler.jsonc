@@ -15,7 +15,8 @@
 		// The worker now fails closed outside local development if Access is not configured.
 		"DOMAINS": "195-0.com,2k27.org,38-0.games,ai-hairstyle.org,aigenmusic.com,alldailygames.com,attractivenesstestlab.com,babyboogey.com,ballfight.cc,foyria.com,heartopia-codes.com,khajiitnamegenerator.xyz,krea2.online,krillion.live,lifeimmaculategrid.com,living-the-grid.net,mangatrans.org,moviespot.org,mp3totranscript.com,outstanding-tiny-desk.com,pagerage.org,palworldchromite.com,photo2ads.com,playnoillirk.com,poople.top,rain-dance-ai.com,revolutionidle.org,scenemio.com,size-it-up.org,soundtools.online,tagmint.app,tavernlantern.com,tinyeden.org,topview-t1.org,triviadrift.com,tuvimo.com,volume-shader.org,web-harmonium.online,whatbrandonthinks.net,wonderhop.org,yournameinlandsat.online",
 		"EMAIL_ADDRESSES": ["support@195-0.com","support@2k27.org","support@38-0.games","support@ai-hairstyle.org","support@aigenmusic.com","reply@aigenmusic.com","hello@alldailygames.com","support@attractivenesstestlab.com","support@babyboogey.com","support@ballfight.cc","notifications@foyria.com","billing@foyria.com","hello@foyria.com","support@foyria.com","support@heartopia-codes.com","support@khajiitnamegenerator.xyz","support@krea2.online","support@krillion.live","support@lifeimmaculategrid.com","support@living-the-grid.net","support@mangatrans.org","support@moviespot.org","support@mp3totranscript.com","support@outstanding-tiny-desk.com","support@pagerage.org","support@palworldchromite.com","support@photo2ads.com","support@playnoillirk.com","support@poople.top","support@rain-dance-ai.com","support@revolutionidle.org","admin@scenemio.com","support@scenemio.com","support@size-it-up.org","support@soundtools.online","support@tagmint.app","support@tavernlantern.com","support@tinyeden.org","support@topview-t1.org","support@triviadrift.com","support@tuvimo.com","support@volume-shader.org","contact@web-harmonium.online","support@whatbrandonthinks.net","support@wonderhop.org","support@yournameinlandsat.online"],
-		"AUTO_DRAFT_ENABLED": "false"
+		"AUTO_DRAFT_ENABLED": "false",
+		"WBT_SUPPORT_SYNC_START_AT": "2026-11-08T17:54:28.568Z"
 	},
 	"send_email": [
 		{
@@ -31,6 +32,7 @@
 			"preview_bucket_name": "agentic-inbox"
 		}
 	],
+	"services": [{"binding":"WBT_SUPPORT_SOURCE","service":"what-brandon-thinks","entrypoint":"SupportInboxSource"}],
 	"ai": {
 		"binding": "AI"
 	},

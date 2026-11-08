@@ -818,6 +818,13 @@ export class MailboxDO extends DurableObject<Env> {
 
 	// ── Email creation (Drizzle) ───────────────────────────────────
 
+	async importSupportEmail(folder: string, email: EmailData) {
+		const existing = this.db.select({id:schema.emails.id}).from(schema.emails).where(eq(schema.emails.id,email.id)).limit(1).get();
+		if(existing) return false;
+		await this.createEmail(folder,email,[]);
+		return true;
+	}
+
 	async createEmail(
 		folder: string,
 		email: EmailData,

@@ -631,6 +631,98 @@ export class SupportStore {
     });
     return next;
   }
+  recordSourceIntake(
+    id: string,
+    reference: string,
+    createdAt: string,
+    source: { historical: boolean; hasReply: boolean },
+  ) {
+    const eventId = `source-intake:${reference}`;
+    if (this.one("SELECT data FROM support_events WHERE id = ?", eventId))
+      return;
+    const item = this.getCase(id);
+    if (source.historical && !source.hasReply && item?.version === 1) {
+      this.save({
+        ...item,
+        status: "needs_owner",
+        summary: "历史网站表单首次补录，需核对原 QQ 已有回复",
+        nextAction:
+          "先核对原 QQ 已发送与原站处理记录，再决定后续动作。历史请求不直接当作新来信再次答复。",
+        version: item.version + 1,
+      });
+    }
+    this.event({
+      id: eventId,
+      caseId: id,
+      createdAt,
+      actor: "system",
+      kind: "source_import",
+      summary: "已同步 What Brandon Thinks 网站联系表单",
+      evidence: `原站工单 ${reference}。发件地址来自联系表单填写，尚未验证邮箱归属。原站自动确认与已有客服回复会一起同步；涉及账户、退款、删除的操作仍须核验并交由所有者确认。`,
+    });
+  }
+  recordSourceReply(
+    id: string,
+    input: {
+      id: string;
+      inboundEmailId: string;
+      text: string;
+      providerMessageId: string | null;
+      sentAt: string;
+    },
+  ) {
+    const operationId = `source-reply:${input.id}`;
+    if (this.getOperation(operationId)) return this.getCase(id);
+    const item = this.getCase(id);
+    if (!item) throw new SupportConflict("工单不存在");
+    const operation: ReplyOperation = {
+      id: operationId,
+      caseId: id,
+      emailId: input.inboundEmailId,
+      claimId: "source-import",
+      startedAt: input.sentAt,
+      state: "accepted",
+      text: input.text,
+      summary: "原站客服回复已有发送记录",
+      status: "waiting_customer",
+      actor: "operator",
+      kind: "reply",
+      providerMessageId: input.providerMessageId ?? undefined,
+    };
+    this.sql.exec(
+      "INSERT INTO support_operations(id,data) VALUES (?,?)",
+      operationId,
+      JSON.stringify(operation),
+    );
+    this.event({
+      id: operationId,
+      caseId: id,
+      createdAt: input.sentAt,
+      actor: "operator",
+      kind: "source_reply_accepted",
+      summary: "原站已发送客服回复，已同步到完整对话",
+      replyText: input.text,
+      providerMessageId: input.providerMessageId ?? undefined,
+    });
+    if (item.delivery === "uncertain") return item;
+    if (item.version > 1 && input.sentAt < item.updatedAt) return item;
+    const needsWork =
+      item.ownerInstructionPending ||
+      item.latestEmailId !== input.inboundEmailId;
+    return this.save({
+      ...item,
+      status: needsWork ? "pending" : "waiting_customer",
+      summary: needsWork
+        ? "原站已回复此前请求，仍有后续事项待处理"
+        : "已通过原站回复客户，等待补充",
+      delivery: "accepted",
+      replyOperationId: operationId,
+      waitingSince: needsWork ? undefined : input.sentAt,
+      updatedAt: new Date().toISOString(),
+      version: item.version + 1,
+      claimId: undefined,
+    });
+  }
   automation() {
     return (
       this.one<SupportAutomation>(

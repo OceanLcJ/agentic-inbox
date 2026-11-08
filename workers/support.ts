@@ -37,6 +37,22 @@ export class SupportDeskDO extends DurableObject<Env> {
   }) {
     return this.store.dashboard(options);
   }
+  recordSourceIntake(
+    id: string,
+    reference: string,
+    createdAt: string,
+    source: Parameters<SupportStore["recordSourceIntake"]>[3],
+  ) {
+    return this.atomic(() =>
+      this.store.recordSourceIntake(id, reference, createdAt, source),
+    );
+  }
+  recordSourceReply(
+    id: string,
+    input: Parameters<SupportStore["recordSourceReply"]>[1],
+  ) {
+    return this.atomic(() => this.store.recordSourceReply(id, input));
+  }
   overview() {
     return this.store.overview();
   }

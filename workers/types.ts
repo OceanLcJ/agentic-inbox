@@ -3,6 +3,8 @@
 //     https://opensource.org/licenses/Apache-2.0
 
 export interface Env extends Cloudflare.Env {
+	WBT_SUPPORT_SOURCE: Fetcher;
+	WBT_SUPPORT_SYNC_START_AT: string;
 	POLICY_AUD: string;
 	TEAM_DOMAIN: string;
 }
