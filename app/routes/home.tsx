@@ -335,29 +335,8 @@ export default function HomeRoute() {
 	return (
 		<div
 			lang="zh-CN"
-			className="mailbox-directory min-h-screen bg-kumo-recessed text-kumo-default"
+			className="mailbox-directory bg-kumo-recessed text-kumo-default"
 		>
-			<header className="directory-topbar">
-				<div className="directory-topbar-inner">
-					<RouterLink
-						to="/"
-						className="directory-brand"
-						aria-label="返回邮箱首页"
-					>
-						<span className="directory-brand-icon">
-							<EnvelopeIcon size={21} weight="bold" />
-						</span>
-						<span>Agentic Inbox</span>
-					</RouterLink>
-					<nav className="directory-global-nav" aria-label="工作台导航">
-						<RouterLink to="/support">
-							<LifebuoyIcon size={17} />
-							客服处理
-						</RouterLink>
-						<span className="text-xs text-kumo-subtle">多项目邮件工作台</span>
-					</nav>
-				</div>
-			</header>
 			<div className="directory-workspace">
 				<aside className="directory-navigation" aria-label="邮箱视图">
 					<nav

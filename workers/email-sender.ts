@@ -68,5 +68,8 @@ export async function sendEmail(
 	}
 
 	const result = await binding.send(message as any);
-	return { messageId: result.messageId };
+	if (!result || typeof result.messageId !== "string" || !result.messageId.trim()) {
+		throw new Error("邮件服务未返回接受编号，投递结果需要核对");
+	}
+	return { messageId: result.messageId.replace(/^<|>$/g, "") };
 }

@@ -94,3 +94,67 @@ test('owner cannot reconcile an in-flight send or assert acceptance without a re
  f.store.finishReply(f.request.operationId,{error:'Timeout',definitive:false});item=f.store.getCase(item.id);
  assert.throws(()=>f.store.reconcileReply(item.id,item.version,'owner-no-receipt',{outcome:'accepted',evidence:'Found it'}),/接受编号/);
 });
+
+test('owner can send a deliberate follow-up while automatic duplicate replies remain blocked',()=>{
+ const f=claimed();f.store.beginReply(f.item.id,f.request);f.store.finishReply(f.request.operationId,{providerMessageId:'receipt-1'});
+ let item=f.store.getCase(f.item.id);
+ const owner={...f.request,expectedVersion:item.version,operationId:'owner-follow-up',claimId:'owner-follow-up',text:'One more detail.'};
+ const started=f.store.beginReply(item.id,owner,undefined,true);assert.equal(started.operation.actor,'operator');
+ assert.throws(()=>f.store.beginReply(item.id,{...owner,operationId:'another-owner',expectedVersion:f.store.getCase(item.id).version},undefined,true),/已有发送记录/);
+ f.store.finishReply(owner.operationId,{providerMessageId:'receipt-2'});
+ assert.equal(f.store.getEvents(item.id).at(-1).actor,'operator');
+ assert.throws(()=>f.store.beginReply(item.id,{...owner,text:'Changed'},undefined,true),/发送内容已更改/);
+});
+test('outgoing mail is persisted before send, replay-safe, and joined by the first real customer reply',()=>{
+ const f=fixture();const request={operationId:'new-message-one',mailboxId:f.input.mailboxId,to:f.input.sender,subject:'A new conversation',text:'Hello'};
+ const first=f.store.beginOutgoing(request,'2026-11-08T12:00:00.000Z');
+ assert.equal(f.store.getCase(first.operation.caseId).latestInboundAt,'');
+ assert.equal(f.store.getCase(first.operation.caseId).delivery,'uncertain');
+ assert.equal(f.store.beginOutgoing(request).replay,true);
+ assert.throws(()=>f.store.beginOutgoing({...request,to:'another@example.test'}),/发送内容已更改/);
+ f.store.finishReply(request.operationId,{providerMessageId:'receipt-outgoing'},'2026-11-08T12:01:00.000Z');
+ assert.equal(f.store.getCase(first.operation.caseId).status,'waiting_customer');
+ assert.equal(f.store.getEvents(first.operation.caseId).at(-1).kind,'outgoing_accepted');
+ const inbound=f.store.registerInbound({...f.input,threadId:request.operationId,emailId:'real-inbound',date:'2026-11-08T12:02:00.000Z'});
+ assert.equal(inbound.id,first.operation.caseId);assert.equal(inbound.status,'pending');
+});
+test('overview counts distinct customer cases in the Shanghai day and excludes system/ignored activity',()=>{
+ const f=fixture();let item=f.create();
+ item=f.store.updateCase(item.id,{expectedVersion:item.version,operationId:'before-day',status:'processing',summary:'Before midnight',nextAction:''},'agent','2026-11-08T15:59:59.000Z');
+ assert.equal(f.store.overview('2026-11-08T16:00:00.000Z').todayTouched,0);
+ item=f.store.updateCase(item.id,{expectedVersion:item.version,operationId:'on-day',status:'needs_owner',summary:'Need an answer',nextAction:'Confirm'},'agent','2026-11-08T16:00:00.000Z');
+ item=f.store.ownerInstruction(item.id,item.version,'owner-on-day','Please check further','2026-11-08T16:01:00.000Z');
+ f.store.startRun('system-run','2026-11-08T16:02:00.000Z');
+ assert.equal(f.store.overview('2026-11-08T17:00:00.000Z').todayTouched,1);
+ item=f.store.updateCase(item.id,{expectedVersion:item.version,operationId:'ignore-case',status:'ignored',summary:'QA only',nextAction:''},'operator','2026-11-08T16:03:00.000Z');
+ assert.equal(f.store.overview('2026-11-08T17:00:00.000Z').todayTouched,0);
+ assert.equal(f.store.activity({period:'today',scope:'customer'},'2026-11-08T17:00:00.000Z').total,0);
+ assert.equal(f.store.activity({scope:'all'}).events.some(e=>e.caseId===item.id),true);
+});
+test('activity pagination and waiting follow-up counts use persisted case context',()=>{
+ const f=fixture();const out=f.store.beginOutgoing({operationId:'compose-waiting',mailboxId:f.input.mailboxId,to:f.input.sender,subject:'Follow up',text:'Hello'},'2026-11-07T12:00:00.000Z');
+ f.store.finishReply(out.operation.id,{providerMessageId:'receipt'},'2026-11-07T12:01:00.000Z');
+ const overview=f.store.overview('2026-11-08T13:00:00.000Z');assert.equal(overview.followUpCount,1);assert.equal(overview.waitingCount,1);
+ const page=f.store.activity({scope:'customer',limit:1,page:2});assert.equal(page.totalPages,2);assert.equal(page.page,2);assert.equal(page.events[0].caseSubject,'Follow up');assert.equal(page.events[0].mailboxId,f.input.mailboxId);
+});
+
+test('cancellation tombstones recover orphan drafts and reject a delayed original send',()=>{
+ const f=fixture();const request={operationId:'orphan-operation',mailboxId:f.input.mailboxId,to:f.input.sender,subject:'Not submitted',text:'Preserved draft'};
+ const cancelled=f.store.cancelUnsubmittedOperation(request.operationId);assert.equal(cancelled.kind,'cancelled');assert.equal(f.store.getOperation(request.operationId).state,'failed');assert.equal(f.store.cancelUnsubmittedOperation(request.operationId).id,request.operationId);
+ assert.throws(()=>f.store.beginOutgoing(request),/已取消/);
+ const item=f.create();assert.throws(()=>f.store.beginReply(item.id,{operationId:request.operationId,expectedVersion:item.version,claimId:'owner-cancelled',text:request.text,summary:'Not sent',status:'waiting_customer'},undefined,true),/已取消/);
+});
+test('cancellation cannot override started, uncertain, or accepted delivery',()=>{
+ for(const result of [null,{error:'Timeout',definitive:false},{providerMessageId:'receipt'}]){
+  const f=fixture();const request={operationId:'active-operation',mailboxId:f.input.mailboxId,to:f.input.sender,subject:'Submitted',text:'Hello'};f.store.beginOutgoing(request);if(result)f.store.finishReply(request.operationId,result);
+  assert.throws(()=>f.store.cancelUnsubmittedOperation(request.operationId),/已有投递记录/);
+ }
+});
+
+test('quiet scan heartbeats are journaled once without increasing customer processing counts',()=>{
+ const f=fixture();const time='2026-11-08T17:00:00.000Z';
+ f.store.updateAutomation({enabled:true,lastScanAt:time,lastScanError:''});f.store.updateAutomation({lastScanAt:time,lastScanError:''});
+ const events=f.store.activity({},time).events;assert.equal(events.length,1);assert.equal(events[0].kind,'scan_finished');assert.equal(events[0].actor,'system');assert.equal(f.store.overview(time).todayTouched,0);assert.equal(f.store.activity({scope:'customer'},time).total,0);
+ f.store.updateAutomation({lastScanAt:'2026-11-08T18:00:00.000Z',lastScanError:'One mailbox unavailable'});assert.equal(f.store.activity().events[0].kind,'scan_failed');
+ f.store.updateAutomation({lastScanAt:time,lastScanError:''});assert.equal(f.store.activity().total,2);assert.equal(f.store.automation().lastScanAt,'2026-11-08T18:00:00.000Z');assert.equal(f.store.automation().lastScanError,'One mailbox unavailable');
+});

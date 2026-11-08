@@ -35,6 +35,7 @@ import { useUIStore } from "~/hooks/useUIStore";
 import type { Email } from "~/types";
 
 const PAGE_SIZE = 25;
+const FOLDER_LABELS:Record<string,string>={inbox:"收件箱",sent:"已发送",draft:"草稿箱",archive:"归档",trash:"废纸篓",spam:"垃圾邮件"};
 
 const FOLDER_EMPTY_STATES: Record<
 	string,
@@ -194,6 +195,7 @@ export default function EmailListRoute() {
 
 	const folderName = useMemo(() => {
 		const found = folders.find((f) => f.id === folder);
+		if (folder && FOLDER_LABELS[folder]) return FOLDER_LABELS[folder];
 		if (found) return found.name;
 		return folder ? folder.charAt(0).toUpperCase() + folder.slice(1) : "Inbox";
 	}, [folders, folder]);
@@ -208,10 +210,10 @@ export default function EmailListRoute() {
 		prevFolderRef.current = `${mailboxId}/${folder}`;
 
 		if (folderChanged) {
-			closePanel();
+			if (!linkedEmailId) closePanel();
 			setPage(1);
 		}
-	}, [mailboxId, folder, closePanel]);
+	}, [mailboxId, folder, closePanel, linkedEmailId]);
 
 	const toggleStar = (e: React.MouseEvent, email: Email) => {
 		e.preventDefault();
@@ -301,7 +303,7 @@ export default function EmailListRoute() {
 						</span>
 					)}
 					<Tooltip
-						content={isRefreshing ? "Refreshing..." : "Refresh"}
+						content={isRefreshing ? "Refreshing..." : "刷新"}
 						side="bottom"
 						asChild
 					>
@@ -317,7 +319,7 @@ export default function EmailListRoute() {
 							}
 							onClick={handleRefresh}
 							disabled={isRefreshing}
-							aria-label="Refresh"
+							aria-label="刷新"
 						/>
 					</Tooltip>
 				</div>

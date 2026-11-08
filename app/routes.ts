@@ -9,7 +9,10 @@ import {
 } from "@react-router/dev/routes";
 
 export default [
-	index("routes/home.tsx"),
+	index("routes/dashboard.tsx"),
+	route("projects", "routes/home.tsx"),
+	route("inbox", "routes/inbox.tsx"),
+	route("records", "routes/records.tsx"),
 	route("support", "routes/support.tsx"),
 	route("mailbox/:mailboxId", "routes/mailbox.tsx", [
 		index("routes/mailbox-index.tsx"),

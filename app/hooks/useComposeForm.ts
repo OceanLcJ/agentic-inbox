@@ -185,8 +185,8 @@ export function useComposeForm(mailboxId?: string, _folder?: string) {
 	const isDraftEdit = !!composeOptions.draftEmail;
 
 	const formTitle = useMemo(() => {
-		if (isDraftEdit) return "Edit Draft";
-		switch (composeOptions.mode) { case "reply": return "Reply"; case "reply-all": return "Reply All"; case "forward": return "Forward"; default: return "New Message"; }
+		if (isDraftEdit) return "编辑草稿";
+		switch (composeOptions.mode) { case "reply": return "回复"; case "reply-all": return "回复全部"; case "forward": return "转发"; default: return "新邮件"; }
 	}, [composeOptions.mode, isDraftEdit]);
 
 	const sigBlock = useMemo(() => getSignatureBlock(currentMailbox?.settings), [currentMailbox]);
@@ -222,10 +222,10 @@ export function useComposeForm(mailboxId?: string, _folder?: string) {
 				thread_id: composeOptions.originalEmail?.thread_id || composeOptions.draftEmail?.thread_id || undefined,
 				draft_id: composeOptions.draftEmail?.id || undefined,
 			} });
-			toastManager.add({ title: "Draft saved!" });
+			toastManager.add({ title: "草稿已保存" });
 		}
 		catch (err: unknown) {
-			const message = (err instanceof Error ? err.message : null) || "Failed to save draft.";
+			const message = (err instanceof Error ? err.message : null) || "草稿保存失败，请重试。";
 			setError(message);
 			toastManager.add({ title: message, variant: "error" });
 		}
@@ -234,9 +234,9 @@ export function useComposeForm(mailboxId?: string, _folder?: string) {
 
 	const handleSend = async (e: FormEvent, onClose: () => void) => {
 		e.preventDefault(); if (isSending) return; setError(null);
-		if (!currentMailbox || !mailboxId) { setError("No mailbox selected."); return; }
+		if (!currentMailbox || !mailboxId) { setError("请先选择发件邮箱。"); return; }
 		const toRecipients = splitEmailList(to);
-		if (toRecipients.length === 0) { setError("Add at least one recipient."); return; }
+		if (toRecipients.length === 0) { setError("请填写收件邮箱。"); return; }
 		const ccRecipients = splitEmailList(cc); const bccRecipients = splitEmailList(bcc);
 		const fromName = currentMailbox.settings?.fromName || currentMailbox.name;
 		const from = fromName && fromName !== currentMailbox.email ? { email: currentMailbox.email, name: fromName } : currentMailbox.email;
@@ -250,15 +250,15 @@ export function useComposeForm(mailboxId?: string, _folder?: string) {
 			text: htmlToPlainText(body),
 		};
 		const draftId = composeOptions.draftEmail?.id; const mode = composeOptions.mode; const originalId = composeOptions.originalEmail?.id || composeOptions.draftEmail?.in_reply_to;
-		setIsSending(true); toastManager.add({ title: "Sending email..." });
+		setIsSending(true); toastManager.add({ title: "正在提交邮件…" });
 		try {
 			if ((mode === "reply" || mode === "reply-all") && originalId) await replyMutation.mutateAsync({ mailboxId, emailId: originalId, email: emailData });
 			else if (mode === "forward" && originalId) await forwardMutation.mutateAsync({ mailboxId, emailId: originalId, email: emailData });
 			else await sendEmailMutation.mutateAsync({ mailboxId, email: emailData });
 			if (draftId) deleteEmailMutation.mutate({ mailboxId, id: draftId });
-			toastManager.add({ title: "Email sent!" });
+			toastManager.add({ title: "邮件已提交，请在已发送中核对。" });
 			onClose();
-		} catch (err: unknown) { const message = (err instanceof Error ? err.message : null) || "Failed to send email."; setError(message); toastManager.add({ title: message, variant: "error" }); }
+		} catch (err: unknown) { const message = (err instanceof Error ? err.message : null) || "提交失败，请核对邮件记录后再试。"; setError(message); toastManager.add({ title: message, variant: "error" }); }
 		finally { setIsSending(false); }
 	};
 

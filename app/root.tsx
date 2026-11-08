@@ -24,6 +24,8 @@ import {
 } from "react-router";
 import { ApiError } from "~/services/api";
 import "./index.css";
+import "./workspace.css";
+import WorkspaceShell from "~/components/WorkspaceShell";
 
 function makeQueryClient() {
 	return new QueryClient({
@@ -77,7 +79,7 @@ const KumoLink = forwardRef<
 
 export function Layout({ children }: { children: React.ReactNode }) {
 	return (
-		<html lang="en">
+		<html lang="zh-CN">
 			<head>
 				<meta charSet="UTF-8" />
 				<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -118,7 +120,7 @@ export default function App() {
 			<LinkProvider component={KumoLink}>
 				<TooltipProvider>
 					<Toasty>
-						<Outlet />
+						<WorkspaceShell><Outlet /></WorkspaceShell>
 					</Toasty>
 				</TooltipProvider>
 			</LinkProvider>

@@ -67,7 +67,7 @@ export default function ComposeEmail() {
 								onClick={() => setShowCcBcc(true)}
 								className="shrink-0 text-xs text-kumo-link hover:text-kumo-link-hover font-medium mt-5"
 							>
-								CC / BCC
+								抄送 / 密送
 							</button>
 						)}
 					</div>
@@ -78,7 +78,7 @@ export default function ComposeEmail() {
 							size="sm"
 							value={cc}
 							onChange={(e) => setCc(e.target.value)}
-							placeholder="Separate multiple addresses with commas"
+							placeholder="多个邮箱用逗号分隔"
 						/>
 					)}
 					{showCcBcc && (
@@ -88,7 +88,7 @@ export default function ComposeEmail() {
 							size="sm"
 							value={bcc}
 							onChange={(e) => setBcc(e.target.value)}
-							placeholder="Separate multiple addresses with commas"
+							placeholder="多个邮箱用逗号分隔"
 						/>
 					)}
 					<Input
@@ -126,7 +126,7 @@ export default function ComposeEmail() {
 								icon={<FloppyDiskIcon size={14} />}
 								onClick={handleSaveDraft}
 							>
-								{isSavingDraft ? "Saving..." : "Save as Draft"}
+								{isSavingDraft ? "保存中…" : "保存草稿"}
 							</Button>
 							<Button
 								type="submit"
@@ -136,7 +136,7 @@ export default function ComposeEmail() {
 								disabled={isSavingDraft || isSending}
 								icon={<PaperPlaneTiltIcon size={14} />}
 							>
-								{isSending ? "Sending..." : "Send"}
+								{isSending ? "提交中…" : "发送"}
 							</Button>
 						</div>
 					</div>

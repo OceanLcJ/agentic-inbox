@@ -1,0 +1,1199 @@
+/* The unified workspace follows the approved, compact Chinese dashboard. */
+.workspace-shell {
+  --ws-bg: var(--color-kumo-base);
+  --ws-soft: var(--color-kumo-recessed);
+  --ws-line: var(--color-kumo-line);
+  --ws-ink: var(--text-color-kumo-default);
+  --ws-muted: var(--text-color-kumo-strong);
+  --ws-blue: var(--text-color-kumo-link);
+  --ws-amber: light-dark(#9b6418, #e3b76a);
+  --ws-green: light-dark(#39775b, #8dc7a5);
+  display: flex;
+  height: 100dvh;
+  min-height: 0;
+  color: var(--ws-ink);
+  background: var(--ws-bg);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.workspace-shell * {
+  box-sizing: border-box;
+}
+.workspace-shell
+  :is(a, button, input, textarea, select, summary):focus-visible {
+  outline: 2px solid var(--color-kumo-brand);
+  outline-offset: 3px;
+}
+.workspace-shell button {
+  cursor: pointer;
+}
+.workspace-shell button:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+.workspace-shell a {
+  text-underline-offset: 3px;
+}
+.workspace-shell h1,
+.workspace-shell h2,
+.workspace-shell h3 {
+  color: var(--ws-ink);
+}
+.workspace-skip {
+  position: fixed;
+  left: 12px;
+  top: -80px;
+  z-index: 100;
+  background: var(--ws-bg);
+  padding: 12px;
+}
+.workspace-skip:focus {
+  top: 10px;
+}
+.workspace-rail {
+  width: 182px;
+  flex: none;
+  background: var(--ws-soft);
+  border-right: 1px solid var(--ws-line);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 23px 12px 15px;
+}
+.workspace-brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 13px;
+  font-weight: 650;
+  text-decoration: none;
+  padding: 0 4px;
+  margin-bottom: 27px;
+  white-space: nowrap;
+}
+.workspace-brand > svg {
+  color: var(--ws-blue);
+  flex: none;
+}
+.workspace-brand small {
+  display: block;
+  font-size: 10px;
+  color: var(--ws-muted);
+  font-weight: 400;
+  margin-top: 1px;
+}
+.workspace-nav {
+  display: grid;
+  gap: 5px;
+}
+.workspace-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 42px;
+  padding: 8px 10px;
+  color: var(--ws-muted);
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 13px;
+}
+.workspace-nav-link:hover {
+  background: var(--color-kumo-tint);
+}
+.workspace-nav-link.active {
+  color: var(--ws-blue);
+  background: var(--color-kumo-base);
+  font-weight: 600;
+}
+.workspace-compose-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--ws-line);
+  background: var(--ws-bg);
+  border-radius: 6px;
+  text-decoration: none;
+  padding: 9px;
+  margin-top: 22px;
+  font-size: 13px;
+  font-weight: 500;
+}
+.workspace-rail-note {
+  font-size: 11px;
+  line-height: 1.9;
+  color: var(--ws-muted);
+  margin-top: auto;
+  padding: 35px 6px 0;
+}
+.workspace-content {
+  flex: 1;
+  min-width: 0;
+  overflow: auto;
+  outline: none;
+}
+.ws-screen {
+  max-width: 1440px;
+  padding: 25px 28px 40px;
+  margin: auto;
+}
+.ws-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.ws-heading h1 {
+  font-size: 23px;
+  line-height: 1.4;
+  font-weight: 650;
+  letter-spacing: -0.025em;
+}
+.ws-heading p {
+  color: var(--ws-muted);
+  font-size: 12px;
+  margin-top: 5px;
+}
+.ws-text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--ws-blue);
+  font-size: 12px;
+  text-decoration: none;
+}
+.ws-text-link:hover {
+  text-decoration: underline;
+}
+.ws-health {
+  font-size: 11px;
+  color: var(--ws-muted);
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--ws-line);
+  padding-bottom: 10px;
+}
+.ws-health summary {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  cursor: pointer;
+  min-height: 26px;
+}
+.ws-health summary > span:last-child {
+  margin-left: auto;
+}
+.ws-health-dot {
+  height: 6px;
+  width: 6px;
+  border-radius: 50%;
+  background: var(--ws-green);
+  flex: none;
+}
+.ws-health-warning .ws-health-dot {
+  background: var(--ws-amber);
+}
+.ws-health > div {
+  padding: 10px 0;
+  font-size: 12px;
+  line-height: 1.9;
+  max-width: 70ch;
+}
+.ws-health-warning summary {
+  color: var(--ws-amber);
+}
+.ws-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.ws-metric {
+  border: 1px solid var(--ws-line);
+  border-radius: 8px;
+  padding: 12px 14px;
+  text-decoration: none;
+  min-width: 0;
+}
+.ws-metric:hover {
+  background: var(--color-kumo-tint);
+}
+.ws-metric > span {
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.ws-metric > span svg {
+  color: var(--ws-muted);
+}
+.ws-metric > strong {
+  display: block;
+  font-size: 27px;
+  line-height: 1.4;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  margin: 3px 0;
+}
+.ws-metric strong small {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--ws-muted);
+  margin-left: 6px;
+}
+.ws-metric p {
+  font-size: 11px;
+  color: var(--ws-muted);
+  line-height: 1.6;
+}
+.ws-metric-owner > strong {
+  color: var(--ws-amber);
+}
+.ws-metric-work > strong {
+  color: var(--ws-blue);
+}
+.ws-dashboard-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: 28px;
+}
+.ws-dashboard-columns > div {
+  min-width: 0;
+}
+.ws-dashboard-section + .ws-dashboard-section {
+  margin-top: 25px;
+}
+.ws-section-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 9px;
+}
+.ws-section-heading h2 {
+  font-size: 14px;
+  font-weight: 600;
+}
+.ws-section-heading h2 small {
+  font-size: 12px;
+  color: var(--ws-muted);
+  font-weight: 400;
+  margin-left: 5px;
+}
+.ws-section-heading > a,
+.ws-section-heading > span {
+  font-size: 11px;
+  color: var(--ws-muted);
+  text-decoration: none;
+}
+.ws-section-heading > a:hover {
+  color: var(--ws-blue);
+}
+.ws-case-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--ws-line);
+  text-decoration: none;
+}
+.ws-case-row:hover .ws-case-copy > strong {
+  color: var(--ws-blue);
+}
+.ws-project-mark {
+  height: 29px;
+  width: 29px;
+  background: var(--ws-soft);
+  display: grid;
+  place-items: center;
+  flex: none;
+  border: 1px solid var(--ws-line);
+  border-radius: 5px;
+  font-size: 10px;
+  font-weight: 600;
+}
+.ws-case-copy {
+  min-width: 0;
+  flex: 1;
+}
+.ws-case-copy > strong {
+  font-size: 13px;
+  font-weight: 600;
+  display: block;
+  overflow-wrap: anywhere;
+}
+.ws-case-copy p {
+  font-size: 12px;
+  color: var(--ws-muted);
+  margin: 4px 0;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.ws-case-copy small {
+  font-size: 11px;
+  color: var(--ws-muted);
+  overflow-wrap: anywhere;
+}
+.ws-badge {
+  font-size: 10px;
+  white-space: nowrap;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--ws-soft);
+  color: var(--ws-muted);
+  font-weight: 500;
+  flex: none;
+}
+.ws-needs_owner {
+  color: var(--ws-amber);
+  background: light-dark(#fcf3e3, #302819);
+}
+.ws-processing {
+  color: var(--ws-blue);
+  background: var(--color-kumo-info-tint);
+}
+.ws-resolved {
+  color: var(--ws-green);
+  background: light-dark(#edf5ef, #1e3027);
+}
+.ws-quiet-empty {
+  padding: 24px 0;
+  border-top: 1px solid var(--ws-line);
+  border-bottom: 1px solid var(--ws-line);
+  color: var(--ws-muted);
+  font-size: 12px;
+  line-height: 1.9;
+}
+.ws-quiet-empty strong {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ws-ink);
+}
+.ws-quiet-empty p {
+  margin: 3px 0;
+}
+.ws-empty {
+  padding: 55px 20px;
+  text-align: center;
+  color: var(--ws-muted);
+  font-size: 13px;
+}
+.ws-empty strong {
+  color: var(--ws-ink);
+  font-weight: 500;
+}
+.ws-empty p {
+  margin: 8px 0 15px;
+}
+.ws-distribution {
+  height: 12px;
+  display: flex;
+  gap: 3px;
+  margin: 16px 0;
+  background: var(--ws-soft);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.ws-distribution span {
+  min-width: 0;
+}
+.ws-segment-needs_owner {
+  background: var(--ws-amber);
+}
+.ws-segment-processing {
+  background: var(--ws-blue);
+}
+.ws-segment-pending {
+  background: var(--ws-line);
+}
+.ws-segment-waiting_customer {
+  background: var(--ws-muted);
+}
+.ws-segment-resolved {
+  background: var(--ws-green);
+}
+.ws-distribution-legend {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 5px 12px;
+}
+.ws-distribution-legend a {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  text-decoration: none;
+  color: var(--ws-muted);
+  font-size: 11px;
+  min-height: 26px;
+}
+.ws-distribution-legend a:hover {
+  color: var(--ws-blue);
+}
+.ws-distribution-legend i {
+  height: 6px;
+  width: 6px;
+  border-radius: 2px;
+  flex: none;
+}
+.ws-distribution-legend strong {
+  margin-left: auto;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--ws-ink);
+}
+.ws-activity {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.ws-activity > li {
+  display: grid;
+  grid-template-columns: 78px minmax(0, 1fr);
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--ws-line);
+}
+.ws-activity time {
+  color: var(--ws-muted);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+.ws-activity a,
+.ws-activity p {
+  font-size: 12px;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.ws-activity a:hover {
+  color: var(--ws-blue);
+}
+.ws-activity small {
+  font-size: 11px;
+  color: var(--ws-muted);
+  display: block;
+  margin-top: 4px;
+  overflow-wrap: anywhere;
+}
+.ws-activity summary {
+  font-size: 11px;
+  color: var(--ws-blue);
+  cursor: pointer;
+}
+.ws-dashboard .ws-activity > li {
+  grid-template-columns: 65px minmax(0, 1fr);
+  gap: 10px;
+  padding: 10px 0;
+}
+.ws-toolbar {
+  display: flex;
+  gap: 12px;
+  align-items: end;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.ws-toolbar label {
+  display: grid;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--ws-muted);
+}
+.ws-toolbar select,
+.ws-toolbar input {
+  font-size: 13px;
+  border: 1px solid var(--ws-line);
+  background: var(--ws-bg);
+  color: var(--ws-ink);
+  padding: 9px 11px;
+  border-radius: 6px;
+  min-width: 0;
+  height: 40px;
+}
+.ws-search {
+  flex: 1;
+  min-width: 150px;
+}
+.ws-list-count {
+  font-size: 11px;
+  color: var(--ws-muted);
+  padding-bottom: 6px;
+}
+.ws-inbox-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+.ws-inbox.ws-has-detail .ws-inbox-layout {
+  grid-template-columns: minmax(230px, 0.85fr) minmax(360px, 1.2fr);
+  gap: 25px;
+}
+.ws-inbox-list {
+  min-width: 0;
+}
+.ws-selected .ws-case-row {
+  background: var(--ws-soft);
+}
+.ws-inbox .ws-project-mark {
+  display: none;
+}
+.ws-inbox .ws-case-row {
+  padding: 15px 8px;
+}
+.ws-inbox.ws-has-detail .directory-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+.ws-inbox.ws-has-detail .directory-pagination-summary {
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.ws-detail {
+  min-width: 0;
+  border: 1px solid var(--ws-line);
+  border-radius: 8px;
+  overflow: hidden;
+  align-self: start;
+  background: var(--ws-bg);
+}
+.ws-detail-heading {
+  padding: 18px 20px;
+}
+.ws-detail-heading h2 {
+  font-size: 17px;
+  font-weight: 600;
+  margin: 12px 0 8px;
+  overflow-wrap: anywhere;
+  outline: none;
+}
+.ws-detail-heading p,
+.ws-detail-heading small {
+  font-size: 11px;
+  color: var(--ws-muted);
+  overflow-wrap: anywhere;
+}
+.ws-detail-tabs {
+  display: flex;
+  border-top: 1px solid var(--ws-line);
+  border-bottom: 1px solid var(--ws-line);
+  padding: 0 15px;
+  gap: 10px;
+}
+.ws-detail-tabs button {
+  padding: 11px 5px;
+  font-size: 12px;
+  border-bottom: 2px solid transparent;
+  color: var(--ws-muted);
+  min-height: 44px;
+}
+.ws-detail-tabs [aria-selected="true"] {
+  color: var(--ws-blue);
+  border-bottom-color: var(--ws-blue);
+  font-weight: 600;
+}
+.ws-detail-body {
+  padding: 20px;
+  font-size: 13px;
+}
+.ws-detail-body h3 {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 19px 0 7px;
+}
+.ws-detail-body > h3:first-child {
+  margin-top: 0;
+}
+.ws-detail-back {
+  display: none;
+}
+.ws-pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.9;
+}
+.ws-muted {
+  font-size: 11px;
+  color: var(--ws-muted);
+  overflow-wrap: anywhere;
+}
+.ws-conversation {
+  display: grid;
+  gap: 14px;
+}
+.ws-message {
+  border-bottom: 1px solid var(--ws-line);
+  padding-bottom: 15px;
+}
+.ws-message header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.ws-message header strong {
+  font-size: 11px;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+.ws-message time {
+  font-size: 10px;
+  color: var(--ws-muted);
+  white-space: nowrap;
+}
+.ws-message iframe {
+  max-width: 100%;
+}
+.ws-attachments {
+  font-size: 12px;
+  color: var(--ws-blue);
+  padding-top: 10px;
+}
+.ws-evidence {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--ws-line);
+}
+.ws-evidence small {
+  font-size: 11px;
+  color: var(--ws-muted);
+}
+.ws-timeline {
+  padding: 0;
+  list-style: none;
+}
+.ws-timeline li {
+  padding: 0 0 15px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid var(--ws-line);
+}
+.ws-timeline small {
+  font-size: 11px;
+  color: var(--ws-muted);
+}
+.ws-timeline p {
+  margin-top: 5px;
+}
+.ws-timeline details,
+.ws-reconciliation summary {
+  font-size: 12px;
+  margin-top: 8px;
+}
+.ws-receipt {
+  font-size: 10px;
+  color: var(--ws-muted);
+  overflow-wrap: anywhere;
+}
+.ws-original-link {
+  margin-top: 20px;
+}
+.ws-reconciliation {
+  border-top: 1px solid var(--ws-line);
+  margin-top: 20px;
+  padding-top: 15px;
+  color: var(--ws-amber);
+}
+.ws-reconciliation summary {
+  cursor: pointer;
+  min-height: 35px;
+}
+.ws-form {
+  display: grid;
+  gap: 14px;
+  font-size: 13px;
+}
+.ws-form label,
+.ws-compose-dialog > label {
+  display: grid;
+  gap: 6px;
+  font-size: 12px;
+}
+.ws-form :is(input, textarea, select),
+.ws-compose-dialog > label select {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--ws-line);
+  border-radius: 6px;
+  padding: 9px 10px;
+  background: var(--ws-bg);
+  color: var(--ws-ink);
+  font-size: 13px;
+  line-height: 1.8;
+}
+.ws-form textarea {
+  resize: vertical;
+}
+.ws-form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.ws-button {
+  font-size: 12px;
+  line-height: 1.5;
+  padding: 8px 12px;
+  border: 1px solid var(--ws-line);
+  border-radius: 5px;
+  background: var(--ws-bg);
+  color: var(--ws-ink);
+  white-space: nowrap;
+  min-height: 35px;
+}
+.ws-button:hover {
+  background: var(--ws-soft);
+}
+.ws-primary {
+  background: var(--color-kumo-brand);
+  color: #fff;
+  border-color: var(--color-kumo-brand);
+}
+.ws-primary:hover {
+  background: var(--color-kumo-brand);
+}
+.ws-reply {
+  margin-top: 18px;
+  padding-top: 12px;
+  border-top: 1px solid var(--ws-line);
+}
+.ws-reply h3 {
+  margin: 0;
+}
+.ws-form [role="status"] {
+  color: var(--ws-blue);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.ws-compose-dialog {
+  color: var(--ws-ink);
+  background: var(--ws-bg);
+  border: 1px solid var(--ws-line);
+  border-radius: 10px;
+  padding: 22px;
+  width: min(560px, calc(100vw - 28px));
+  max-height: calc(100dvh - 30px);
+  overflow: auto;
+  margin: auto;
+}
+.ws-compose-dialog::backdrop {
+  background: #0005;
+}
+.ws-compose-dialog > header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.ws-compose-dialog h2 {
+  font-size: 18px;
+  font-weight: 600;
+}
+.ws-compose-dialog > label {
+  margin-bottom: 15px;
+}
+.workspace-mail-context {
+  margin: 22px -12px 0;
+  border-top: 1px solid var(--ws-line);
+  padding-top: 8px;
+  min-height: 0;
+  flex: 1;
+}
+.workspace-embedded-sidebar {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.workspace-embedded-sidebar > div.border-t {
+  display: none;
+}
+.workspace-embedded-sidebar > div:first-child {
+  padding: 8px;
+}
+.workspace-embedded-sidebar nav {
+  padding: 8px;
+}
+.workspace-embedded-sidebar .mailbox-switch-trigger {
+  max-width: 100%;
+}
+.workspace-mail-context .mailbox-switch-trigger {
+  font-size: 11px;
+}
+.workspace-mail-context .mailbox-switch-trigger p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.workspace-embedded-sidebar nav > a {
+  font-size: 12px;
+  gap: 8px;
+}
+.workspace-content > .mailbox-directory .directory-workspace {
+  display: flex;
+  flex-direction: column;
+  padding: 25px 28px 40px;
+  gap: 21px;
+}
+.workspace-content .directory-navigation {
+  position: static;
+  width: 100%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.workspace-content .directory-views {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+.workspace-content .directory-view {
+  font-size: 12px;
+  padding: 7px 10px;
+  min-height: 36px;
+  border: 1px solid transparent;
+}
+.workspace-content .directory-view[aria-current="page"] {
+  background: var(--ws-bg);
+  border-color: var(--ws-line);
+}
+.workspace-content .directory-view-count {
+  margin-left: 3px;
+  font-size: 10px;
+}
+.workspace-content .directory-personal-note {
+  display: none;
+}
+.workspace-content .directory-shortcut-views {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.workspace-content .directory-main {
+  width: 100%;
+  min-width: 0;
+}
+.workspace-content .directory-heading {
+  margin-bottom: 18px;
+}
+.workspace-content .directory-heading h1 {
+  font-size: 23px;
+}
+.workspace-content .directory-heading p {
+  font-size: 12px;
+}
+.workspace-content .directory-project-name h2 {
+  font-size: 14px;
+}
+.workspace-content .directory-list-heading {
+  font-size: 11px;
+}
+.workspace-content .directory-project {
+  padding: 17px 19px;
+}
+.workspace-content .directory-search-row {
+  margin-bottom: 18px;
+}
+@media (max-width: 1100px) {
+  .ws-screen {
+    padding: 24px;
+  }
+  .ws-metrics {
+    gap: 10px;
+  }
+  .ws-dashboard-columns {
+    gap: 24px;
+  }
+  .ws-inbox.ws-has-detail .ws-inbox-layout {
+    grid-template-columns: minmax(210px, 0.8fr) minmax(320px, 1.2fr);
+    gap: 16px;
+  }
+  .ws-inbox.ws-has-detail .ws-toolbar {
+    display: grid;
+  }
+  .ws-case-row > .ws-badge {
+    font-size: 9px;
+  }
+  .ws-inbox .ws-case-row {
+    flex-wrap: wrap;
+  }
+  .ws-inbox .ws-case-copy {
+    flex-basis: 100%;
+  }
+}
+@media (max-width: 850px) {
+  .ws-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ws-dashboard-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ws-inbox.ws-has-detail .ws-inbox-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ws-has-detail .ws-inbox-list,
+  .ws-has-detail > .ws-heading {
+    display: none;
+  }
+  .ws-detail-back {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 13px 20px;
+    border-bottom: 1px solid var(--ws-line);
+    font-size: 12px;
+    color: var(--ws-blue);
+  }
+}
+@media (max-width: 650px) {
+  .workspace-shell {
+    flex-direction: column;
+  }
+  .workspace-rail {
+    width: 100%;
+    padding: 12px 16px 0;
+    border-right: 0;
+    border-bottom: 1px solid var(--ws-line);
+    overflow: visible;
+    flex: none;
+    position: relative;
+  }
+  .workspace-brand {
+    font-size: 13px;
+    margin: 0 0 12px;
+    padding: 0;
+    min-height: 30px;
+  }
+  .workspace-brand small {
+    display: none;
+  }
+  .workspace-brand > svg {
+    width: 20px;
+  }
+  .workspace-nav {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 2px;
+  }
+  .workspace-nav-link {
+    padding: 9px 3px;
+    justify-content: center;
+    gap: 5px;
+    border-radius: 0;
+    font-size: 11px;
+    min-height: 44px;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+  }
+  .workspace-nav-link.active {
+    background: transparent;
+    border-bottom-color: var(--ws-blue);
+  }
+  .workspace-nav-link > svg {
+    width: 15px;
+  }
+  .workspace-compose-link {
+    position: absolute;
+    right: 16px;
+    top: 12px;
+    font-size: 11px;
+    margin: 0;
+    min-height: 30px;
+    padding: 5px 9px;
+  }
+  .workspace-rail-note,
+  .workspace-mail-context {
+    display: none;
+  }
+  .workspace-content {
+    min-height: 0;
+  }
+  .ws-screen {
+    padding: 21px 18px 30px;
+  }
+  .ws-heading {
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 17px;
+  }
+  .ws-heading h1 {
+    font-size: 21px;
+  }
+  .ws-heading p {
+    font-size: 11px;
+    line-height: 1.8;
+  }
+  .ws-heading > .ws-text-link {
+    font-size: 10px;
+    white-space: nowrap;
+    margin-top: 6px;
+  }
+  .ws-health summary {
+    flex-wrap: wrap;
+    min-height: 44px;
+    gap: 6px;
+  }
+  .ws-health summary > span:last-child {
+    margin-left: 0;
+    flex-basis: 100%;
+    padding-left: 12px;
+    font-size: 10px;
+  }
+  .ws-metrics {
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .ws-metric {
+    padding: 11px;
+  }
+  .ws-metric > strong {
+    font-size: 25px;
+  }
+  .ws-metric p {
+    font-size: 10px;
+  }
+  .ws-metric > span {
+    font-size: 11px;
+  }
+  .ws-distribution-legend a {
+    min-height: 44px;
+  }
+  .ws-case-row > .ws-project-mark {
+    display: none;
+  }
+  .ws-case-copy strong {
+    font-size: 12px;
+  }
+  .ws-case-row {
+    gap: 7px;
+  }
+  .ws-activity > li {
+    grid-template-columns: 66px minmax(0, 1fr);
+    gap: 10px;
+  }
+  .ws-toolbar {
+    gap: 10px;
+  }
+  .ws-toolbar label {
+    flex: 1;
+  }
+  .ws-toolbar select {
+    max-width: 100%;
+  }
+  .ws-detail-heading,
+  .ws-detail-body {
+    padding: 17px;
+  }
+  .ws-detail .ws-message header {
+    display: grid;
+    gap: 3px;
+  }
+  .ws-detail-heading h2 {
+    font-size: 16px;
+  }
+  .ws-inbox .ws-toolbar {
+    display: grid;
+  }
+  .ws-detail-tabs {
+    padding: 0 12px;
+  }
+  .workspace-content > .mailbox-directory .directory-workspace {
+    padding: 21px 18px 30px;
+  }
+  .workspace-content .directory-view {
+    padding: 7px;
+    font-size: 11px;
+    min-height: 44px;
+  }
+  .workspace-content .directory-view > svg {
+    width: 15px;
+  }
+  .workspace-content .directory-navigation {
+    gap: 6px;
+  }
+  .workspace-content .directory-heading h1 {
+    font-size: 21px;
+  }
+  .workspace-content .directory-project {
+    padding: 16px;
+  }
+  .ws-button {
+    min-height: 44px;
+  }
+  .ws-compose-dialog {
+    padding: 18px;
+  }
+  .workspace-content .directory-heading {
+    align-items: flex-start;
+  }
+  .ws-inbox .directory-pagination-summary {
+    flex-wrap: wrap;
+  }
+  .ws-detail-back {
+    min-height: 44px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .workspace-shell * {
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
+}
+.ws-case-compact {
+  padding: 11px 0;
+}
+.ws-case-compact .ws-project-mark {
+  display: none;
+}
+.ws-case-compact .ws-case-copy small {
+  display: block;
+  margin-top: 5px;
+}
+.ws-message-body {
+  font-size: 13px;
+  line-height: 1.9;
+  overflow-wrap: anywhere;
+}
+.ws-message-body p {
+  margin: 5px 0;
+}
+.ws-message-body a {
+  color: var(--ws-blue);
+  text-decoration: underline;
+}
+.ws-message-body :is(ul, ol) {
+  padding-left: 20px;
+  margin: 8px 0;
+}
+.ws-message-body ul {
+  list-style: disc;
+}
+.ws-message-body ol {
+  list-style: decimal;
+}
+.ws-message-body blockquote {
+  margin: 12px 0;
+  padding: 0 12px;
+  border-left: 1px solid var(--ws-line);
+  color: var(--ws-muted);
+}
+.ws-message-body pre {
+  white-space: pre-wrap;
+}
+.ws-message-body table {
+  max-width: 100%;
+  display: block;
+  overflow: auto;
+}
+.ws-message-body :is(td, th) {
+  padding: 5px;
+  border: 1px solid var(--ws-line);
+}
+.workspace-shell ::selection {
+  background: var(--color-kumo-info-tint);
+}
+.workspace-shell :is(input, textarea) {
+  caret-color: var(--ws-blue);
+}

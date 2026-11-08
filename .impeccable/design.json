@@ -1,0 +1,350 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-08T17:51:43.466203+00:00",
+  "title": "Design System: Agentic Inbox",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Action Blue",
+        "tonalRamp": [
+          "oklch(37.9% .146 265.522)",
+          "oklch(42.4% .199 265.638)",
+          "oklch(48.8% .243 264.376)",
+          "oklch(.5772 .2324 260)",
+          "oklch(62.3% .214 259.815)",
+          "oklch(70.7% .165 254.624)",
+          "oklch(80.9% .105 251.813)",
+          "oklch(95.1% .026 236.824)"
+        ]
+      },
+      "link": {
+        "role": "primary",
+        "displayName": "Link Blue",
+        "tonalRamp": [
+          "oklch(37.9% .146 265.522)",
+          "oklch(42.4% .199 265.638)",
+          "oklch(48.8% .243 264.376)",
+          "oklch(.5772 .2324 260)",
+          "oklch(62.3% .214 259.815)",
+          "oklch(70.7% .165 254.624)",
+          "oklch(80.9% .105 251.813)",
+          "oklch(95.1% .026 236.824)"
+        ]
+      },
+      "info-tint": {
+        "role": "primary",
+        "displayName": "Information Tint",
+        "tonalRamp": [
+          "oklch(37.9% .146 265.522)",
+          "oklch(42.4% .199 265.638)",
+          "oklch(48.8% .243 264.376)",
+          "oklch(.5772 .2324 260)",
+          "oklch(62.3% .214 259.815)",
+          "oklch(70.7% .165 254.624)",
+          "oklch(80.9% .105 251.813)",
+          "oklch(95.1% .026 236.824)"
+        ]
+      },
+      "base": {
+        "role": "neutral",
+        "displayName": "Workspace Surface",
+        "tonalRamp": [
+          "oklch(14.5% 0 0)",
+          "oklch(26.9% 0 0)",
+          "oklch(37.1% 0 0)",
+          "oklch(43.9% 0 0)",
+          "oklch(55.6% 0 0)",
+          "oklch(70.8% 0 0)",
+          "oklch(87% 0 0)",
+          "oklch(97% 0 0)"
+        ]
+      },
+      "recessed": {
+        "role": "neutral",
+        "displayName": "Recessed Surface",
+        "tonalRamp": [
+          "oklch(14.5% 0 0)",
+          "oklch(26.9% 0 0)",
+          "oklch(37.1% 0 0)",
+          "oklch(43.9% 0 0)",
+          "oklch(55.6% 0 0)",
+          "oklch(70.8% 0 0)",
+          "oklch(87% 0 0)",
+          "oklch(97% 0 0)"
+        ]
+      },
+      "hover": {
+        "role": "neutral",
+        "displayName": "Interaction Tint",
+        "tonalRamp": [
+          "oklch(14.5% 0 0)",
+          "oklch(26.9% 0 0)",
+          "oklch(37.1% 0 0)",
+          "oklch(43.9% 0 0)",
+          "oklch(55.6% 0 0)",
+          "oklch(70.8% 0 0)",
+          "oklch(87% 0 0)",
+          "oklch(97% 0 0)"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Divider",
+        "tonalRamp": [
+          "oklch(14.5% 0 0)",
+          "oklch(26.9% 0 0)",
+          "oklch(37.1% 0 0)",
+          "oklch(43.9% 0 0)",
+          "oklch(55.6% 0 0)",
+          "oklch(70.8% 0 0)",
+          "oklch(87% 0 0)",
+          "oklch(97% 0 0)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Reading Ink",
+        "tonalRamp": [
+          "oklch(14.5% 0 0)",
+          "oklch(26.9% 0 0)",
+          "oklch(37.1% 0 0)",
+          "oklch(43.9% 0 0)",
+          "oklch(55.6% 0 0)",
+          "oklch(70.8% 0 0)",
+          "oklch(87% 0 0)",
+          "oklch(97% 0 0)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Supporting Ink",
+        "tonalRamp": [
+          "oklch(14.5% 0 0)",
+          "oklch(26.9% 0 0)",
+          "oklch(37.1% 0 0)",
+          "oklch(43.9% 0 0)",
+          "oklch(55.6% 0 0)",
+          "oklch(70.8% 0 0)",
+          "oklch(87% 0 0)",
+          "oklch(97% 0 0)"
+        ]
+      },
+      "on-primary": {
+        "role": "neutral",
+        "displayName": "On Action",
+        "tonalRamp": [
+          "oklch(14.5% 0 0)",
+          "oklch(26.9% 0 0)",
+          "oklch(37.1% 0 0)",
+          "oklch(43.9% 0 0)",
+          "oklch(55.6% 0 0)",
+          "oklch(70.8% 0 0)",
+          "oklch(87% 0 0)",
+          "oklch(97% 0 0)"
+        ]
+      },
+      "owner": {
+        "role": "status",
+        "displayName": "Owner Attention",
+        "tonalRamp": [
+          "oklch(15% .09 75)",
+          "oklch(27% .09 75)",
+          "oklch(39% .09 75)",
+          "oklch(51% .09 75)",
+          "oklch(63% .09 75)",
+          "oklch(75% .09 75)",
+          "oklch(87% .09 75)",
+          "oklch(95% .09 75)"
+        ]
+      },
+      "owner-tint": {
+        "role": "status",
+        "displayName": "Owner Attention Surface",
+        "tonalRamp": [
+          "oklch(15% .09 75)",
+          "oklch(27% .09 75)",
+          "oklch(39% .09 75)",
+          "oklch(51% .09 75)",
+          "oklch(63% .09 75)",
+          "oklch(75% .09 75)",
+          "oklch(87% .09 75)",
+          "oklch(95% .09 75)"
+        ]
+      },
+      "resolved": {
+        "role": "status",
+        "displayName": "Resolved",
+        "tonalRamp": [
+          "oklch(15% .06 155)",
+          "oklch(27% .06 155)",
+          "oklch(39% .06 155)",
+          "oklch(51% .06 155)",
+          "oklch(63% .06 155)",
+          "oklch(75% .06 155)",
+          "oklch(87% .06 155)",
+          "oklch(95% .06 155)"
+        ]
+      },
+      "resolved-tint": {
+        "role": "status",
+        "displayName": "Resolved Surface",
+        "tonalRamp": [
+          "oklch(15% .06 155)",
+          "oklch(27% .06 155)",
+          "oklch(39% .06 155)",
+          "oklch(51% .06 155)",
+          "oklch(63% .06 155)",
+          "oklch(75% .06 155)",
+          "oklch(87% .06 155)",
+          "oklch(95% .06 155)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "headline": {
+        "displayName": "Page Headline",
+        "purpose": "Workspace page titles; 21px on mobile."
+      },
+      "title": {
+        "displayName": "Section Title",
+        "purpose": "Compact dashboard headings."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Shell default; long-reading roles follow DESIGN.md."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Short field and component labels."
+      },
+      "metric": {
+        "displayName": "Metric",
+        "purpose": "Tabular dashboard values; 25px on mobile."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "directory-account-arrow",
+        "value": "opacity 120ms ease-out",
+        "purpose": "Account arrow reveal on hover or focus. Disabled by reduced-motion preference."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "workspace-compact",
+        "value": "1100px"
+      },
+      {
+        "name": "workspace-single-column",
+        "value": "850px"
+      },
+      {
+        "name": "directory-stacked",
+        "value": "760px"
+      },
+      {
+        "name": "workspace-mobile-tabs",
+        "value": "650px"
+      },
+      {
+        "name": "directory-narrow",
+        "value": "400px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "description": "Compact filled action; 44px minimum height at 650px.",
+      "html": "<button class=\"ds-primary\">发送邮件</button>",
+      "css": ".ds-primary{font-family:var(--font-sans,system-ui,sans-serif); font-size:12px;line-height:1.5;padding:8px 12px;min-height:35px;border:1px solid var(--color-kumo-brand,oklch(.5772 .2324 260));border-radius:5px;background:var(--color-kumo-brand,oklch(.5772 .2324 260));color:#fff;cursor:pointer;white-space:nowrap}.ds-primary:hover{background:var(--color-kumo-brand,oklch(.5772 .2324 260))}.ds-primary:focus-visible{outline:2px solid var(--color-kumo-brand,oklch(.5772 .2324 260));outline-offset:3px}.ds-primary:disabled{opacity:.5;cursor:default}@media(max-width:650px){.ds-primary{min-height:44px}}",
+      "refersTo": "button-primary"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "description": "Bordered workspace action with recessed hover feedback.",
+      "html": "<button class=\"ds-secondary\">取消</button>",
+      "css": ".ds-secondary{font-family:var(--font-sans,system-ui,sans-serif); font-size:12px;line-height:1.5;padding:8px 12px;min-height:35px;border:1px solid var(--color-kumo-line,#0000001a);border-radius:5px;background:var(--color-kumo-base,#fff);color:var(--text-color-kumo-default,#1a1a1a);cursor:pointer;white-space:nowrap}.ds-secondary:hover{background:var(--color-kumo-recessed,#f7f7f7)}.ds-secondary:focus-visible{outline:2px solid var(--color-kumo-brand,oklch(.5772 .2324 260));outline-offset:3px}.ds-secondary:disabled{opacity:.5;cursor:default}@media(max-width:650px){.ds-secondary{min-height:44px}}",
+      "refersTo": "button-secondary"
+    },
+    {
+      "name": "Labeled Field",
+      "kind": "input",
+      "description": "Visible label, semantic surface, and blue keyboard focus.",
+      "html": "<label class=\"ds-field-label\">收件人<input class=\"ds-field\" placeholder=\"customer@example.com\" /></label>",
+      "css": ".ds-field-label{font-family:var(--font-sans,system-ui,sans-serif); display:grid;gap:6px;font-size:12px;color:var(--text-color-kumo-default,#1a1a1a)}.ds-field{font-family:var(--font-sans,system-ui,sans-serif); min-width:0;border:1px solid var(--color-kumo-line,#0000001a);border-radius:6px;padding:9px 10px;background:var(--color-kumo-base,#fff);color:var(--text-color-kumo-default,#1a1a1a);font-size:13px;line-height:1.8;caret-color:var(--text-color-kumo-link,#1e40af)}.ds-field:focus-visible{outline:2px solid var(--color-kumo-brand,oklch(.5772 .2324 260));outline-offset:3px}",
+      "refersTo": "field"
+    },
+    {
+      "name": "Workspace Navigation",
+      "kind": "nav",
+      "description": "Desktop rail links become four header tabs at 650px.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"主导航\"><a class=\"ds-nav-link\" aria-current=\"page\" href=\"#dashboard\">仪表盘</a><a class=\"ds-nav-link\" href=\"#inbox\">客户来信</a><a class=\"ds-nav-link\" href=\"#records\">处理记录</a><a class=\"ds-nav-link\" href=\"#projects\">项目邮箱</a></nav>",
+      "css": ".ds-nav{display:grid;gap:5px;padding:12px;background:var(--color-kumo-recessed,#f7f7f7);max-width:182px}.ds-nav-link{font-family:var(--font-sans,system-ui,sans-serif); display:flex;align-items:center;min-height:42px;padding:8px 10px;border-radius:6px;font-size:13px;color:var(--text-color-kumo-strong,#666);text-decoration:none}.ds-nav-link:hover{background:var(--color-kumo-tint,#f5f5f5)}.ds-nav-link[aria-current=\"page\"]{background:var(--color-kumo-base,#fff);color:var(--text-color-kumo-link,#1e40af);font-weight:600}.ds-nav-link:focus-visible{outline:2px solid var(--color-kumo-brand,oklch(.5772 .2324 260));outline-offset:3px}@media(max-width:650px){.ds-nav{max-width:none;grid-template-columns:repeat(4,minmax(0,1fr));gap:2px}.ds-nav-link{justify-content:center;min-height:44px;padding:9px 3px;border-radius:0;border-bottom:2px solid transparent;font-size:11px}.ds-nav-link[aria-current=\"page\"]{background:transparent;border-bottom-color:var(--text-color-kumo-link,#1e40af)}}",
+      "refersTo": "nav-link"
+    },
+    {
+      "name": "Owner Status Badge",
+      "kind": "chip",
+      "description": "Written state paired with owner-attention amber.",
+      "html": "<span class=\"ds-owner-badge\">待你决定</span>",
+      "css": ".ds-owner-badge{font-family:var(--font-sans,system-ui,sans-serif); display:inline-block;font-size:10px;line-height:1.6;white-space:nowrap;padding:2px 6px;border-radius:4px;font-weight:500;color:light-dark(#9b6418,#e3b76a);background:light-dark(#fcf3e3,#302819)}",
+      "refersTo": "owner-badge"
+    },
+    {
+      "name": "Metric Card",
+      "kind": "card",
+      "description": "Whole-card link with tabular count and short supporting text.",
+      "html": "<a class=\"ds-metric\" href=\"#owner\"><span>待你决定</span><strong>0<small>项</small></strong><p>需要你的判断或授权</p></a>",
+      "css": ".ds-metric{font-family:var(--font-sans,system-ui,sans-serif); display:block;min-width:0;padding:12px 14px;border:1px solid var(--color-kumo-line,#0000001a);border-radius:8px;text-decoration:none;color:var(--text-color-kumo-default,#1a1a1a)}.ds-metric:hover{background:var(--color-kumo-tint,#f5f5f5)}.ds-metric:focus-visible{outline:2px solid var(--color-kumo-brand,oklch(.5772 .2324 260));outline-offset:3px}.ds-metric>span{font-size:12px}.ds-metric>strong{display:block;font-size:27px;line-height:1.4;letter-spacing:-.02em;font-weight:600;font-variant-numeric:tabular-nums;margin:3px 0;color:light-dark(#9b6418,#e3b76a)}.ds-metric small{font-size:11px;font-weight:400;color:var(--text-color-kumo-strong,#666);margin-left:6px}.ds-metric p{margin:0;font-size:11px;line-height:1.6;color:var(--text-color-kumo-strong,#666)}@media(max-width:650px){.ds-metric{padding:11px}.ds-metric>strong{font-size:25px}}",
+      "refersTo": "metric-card"
+    },
+    {
+      "name": "Case Row",
+      "kind": "custom",
+      "description": "Divider-based row with subject, two-line summary, metadata, and state.",
+      "html": "<a class=\"ds-case\" href=\"#case\"><div class=\"ds-case-copy\"><strong>需要核对邮件内容</strong><p>查看客户来信与已有记录，再决定下一步。</p><small>example.com · 11/09 10:30</small></div><span class=\"ds-case-state\">待处理</span></a>",
+      "css": ".ds-case{font-family:var(--font-sans,system-ui,sans-serif); display:flex;align-items:flex-start;gap:10px;padding:15px 0;border-bottom:1px solid var(--color-kumo-line,#0000001a);text-decoration:none;color:var(--text-color-kumo-default,#1a1a1a)}.ds-case:focus-visible{outline:2px solid var(--color-kumo-brand,oklch(.5772 .2324 260));outline-offset:3px}.ds-case-copy{min-width:0;flex:1}.ds-case-copy>strong{display:block;font-size:13px;font-weight:600;overflow-wrap:anywhere}.ds-case:hover .ds-case-copy>strong{color:var(--text-color-kumo-link,#1e40af)}.ds-case-copy p{margin:4px 0;font-size:12px;color:var(--text-color-kumo-strong,#666);overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.ds-case-copy small{font-size:11px;color:var(--text-color-kumo-strong,#666);overflow-wrap:anywhere}.ds-case-state{padding:2px 6px;border-radius:4px;background:var(--color-kumo-recessed,#f7f7f7);color:var(--text-color-kumo-strong,#666);font-size:10px;white-space:nowrap}",
+      "refersTo": "case-row"
+    }
+  ],
+  "narrative": {
+    "northStar": "项目邮件工作台",
+    "overview": "A compact Chinese workspace for reading project mail, deciding what needs attention, and reviewing processing history. The existing interface label supplies the north star: calm operational surfaces, short labels, readable records, and visible state.\n\nThe system extends Cloudflare Kumo with a persistent navigation shell and compact dashboard. Preserve its neutral surfaces, blue controls, system typography, and light/dark semantic variables. This document records the implemented workspace; `app/workspace.css`, `app/index.css`, and their corresponding components remain the source of truth.",
+    "keyCharacteristics": [
+      "Compact navigation and restrained, bordered surfaces.",
+      "Four operational metrics with tabular numbers.",
+      "Status color paired with a written label.",
+      "Responsive list/detail navigation and constrained mail content."
+    ],
+    "rules": [
+      {
+        "name": "The Semantic Surface Rule",
+        "body": "Use Kumo semantic variables and the workspace status pairs for workspace surfaces; preserve their light/dark behavior.",
+        "section": "colors"
+      },
+      {
+        "name": "The Flat Workspace Rule",
+        "body": "Keep dashboard and reading surfaces flat; use the established tonal and border hierarchy to show grouping and state.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** preserve Kumo semantic variables and the inherited system font.",
+      "**Do** retain the four-tab mobile navigation and the list/detail back path.",
+      "**Do** pair status colors with text and show genuine zero and empty states.",
+      "**Do** keep long mail, addresses, evidence, and pagination within their content bounds.",
+      "**Do** preserve visible keyboard focus and honor reduced-motion preferences."
+    ],
+    "donts": [
+      "**Don't** substitute decorative shadows for the workspace's border and tonal hierarchy.",
+      "**Don't** use the orange Kumo text-brand token for the workspace's blue action role.",
+      "**Don't** let sender-supplied mail styling redefine workspace controls or layout.",
+      "**Don't** hide a selected detail's path back to its list on narrow screens."
+    ]
+  }
+}

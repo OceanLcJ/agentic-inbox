@@ -1,6 +1,6 @@
 # Hourly portfolio customer support
 
-The operator authorized an hourly check of the configured Inbox mailboxes, ordinary customer replies, and small verified fixes. Use the private processing dashboard at `/support` as the record of work and escalation. The scheduler runs locally in Orca; it requires this Mac and Orca to be running.
+The operator authorized an hourly check of the configured Inbox mailboxes, ordinary customer replies, and small verified fixes. Use the private processing dashboard at `/` (dashboard), `/inbox` (case work), and `/records` (audit history) as the record of work and escalation. The scheduler runs locally in Orca; it requires this Mac and Orca to be running.
 
 ## Start each run
 
@@ -16,6 +16,7 @@ The operator authorized an hourly check of the configured Inbox mailboxes, ordin
 - Confirm the project's identity and current behavior from its own website, documentation, source and read-only records. Respect that project's AGENTS.md, release workflow and unrelated local changes.
 - Answer normal usage questions in the customer's language when the answer is supported by current evidence. Ask the customer for necessary details when a diagnosis needs them. Keep replies concise and useful; do not invent work, fixes, delivery, refunds or guarantees.
 - Diagnose reproducible faults. Small, reversible fixes may follow the project's existing authorized development/release workflow with appropriate tests and live verification. Keep broader changes or unclear release authority for the operator. A fix is not complete merely because code was written or deployed.
+- In every escalation, separate verified facts, unresolved facts, your recommended next step, and the precise decision needed. Attach actual record references or observations as evidence; never fill missing order/payment facts with assumptions.
 - Escalate refunds, charges, pricing/discount changes, purchases or paid provider runs, credits/entitlements, account ownership/security, deletion, database migrations, bulk changes, missing facts and work that needs a business decision. Record the finding, supporting evidence and the precise decision needed in `needs_owner`. Do not make those changes on your own.
 - Preserve AIGenMusic's original support/ticket workflow. Check its business records before replying to `support@aigenmusic.com` or `reply@aigenmusic.com`; avoid duplicate acknowledgements or parallel replies.
 - Ignore configuration QA, spam, newsletters and machine-generated notifications only when their content and source establish that they are not customer requests. Record the reason as `ignored`; do not delete the original mail. Operator-authored configuration QA is not a solved customer case.
