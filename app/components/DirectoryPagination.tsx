@@ -9,6 +9,7 @@ export default function DirectoryPagination({
 	pageSize,
 	onPageChange,
 	onPageSizeChange,
+	unit = "项目",
 }: {
 	page: number;
 	totalPages: number;
@@ -18,17 +19,18 @@ export default function DirectoryPagination({
 	pageSize: number;
 	onPageChange: (page: number) => void;
 	onPageSizeChange: (size: number) => void;
+	unit?: string;
 }) {
 	return (
 		<div className="directory-pagination">
 			<div className="directory-pagination-summary">
 				<p>
-					显示 {start}–{end} 项，共 {total} 个项目
+					显示 {start}–{end} 项，共 {total} 个{unit}
 				</p>
 				<label>
 					每页{" "}
 					<select
-						aria-label="每页项目数量"
+						aria-label={`每页${unit}数量`}
 						value={pageSize}
 						onChange={(event) => onPageSizeChange(Number(event.target.value))}
 					>
@@ -41,7 +43,7 @@ export default function DirectoryPagination({
 					项
 				</label>
 			</div>
-			<nav aria-label="项目分页" className="directory-page-controls">
+			<nav aria-label={`${unit}分页`} className="directory-page-controls">
 				<button
 					type="button"
 					aria-label="上一页"

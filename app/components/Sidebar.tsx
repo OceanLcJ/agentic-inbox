@@ -13,6 +13,7 @@ import {
 	PlusIcon,
 	TrashIcon,
 	TrayIcon,
+	LifebuoyIcon,
 } from "@phosphor-icons/react";
 import { useMemo, useState } from "react";
 import { NavLink, useNavigate, useParams } from "react-router";
@@ -222,6 +223,16 @@ export default function Sidebar() {
 					</div>
 				)}
 			</nav>
+			<div className="border-t border-kumo-line p-3">
+				<NavLink
+					to="/support"
+					onClick={handleNavClick}
+					className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-kumo-strong hover:bg-kumo-tint"
+				>
+					<LifebuoyIcon size={18} />
+					客服处理台
+				</NavLink>
+			</div>
 
 			{/* 创建文件夹 dialog */}
 			<Dialog.Root

@@ -10,11 +10,13 @@ import { app as apiApp, receiveEmail } from "./index";
 import { EmailMCP } from "./mcp";
 import type { Env } from "./types";
 import type { InboundMessage } from "./lib/inbound";
+import { supportApp } from "./routes/support";
 
 export { MailboxDO } from "./durableObject";
 export { EmailAgent } from "./agent";
 export { EmailMCP } from "./mcp";
 export { InboxArchive } from "./archive";
+export { SupportDeskDO } from "./support";
 
 declare module "react-router" {
 	export interface AppLoadContext {
@@ -93,6 +95,7 @@ app.all("/mcp/*", async (c) => {
 });
 
 // Mount the API routes
+app.route("/api/v1/support", supportApp);
 app.route("/", apiApp);
 
 // Agent WebSocket routing - must be before React Router catch-all

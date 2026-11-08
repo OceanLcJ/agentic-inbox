@@ -23,6 +23,7 @@ import {
 	BookOpenIcon,
 	WrenchIcon,
 	FoldersIcon,
+	LifebuoyIcon,
 	TrashIcon,
 	XIcon,
 } from "@phosphor-icons/react";
@@ -348,7 +349,13 @@ export default function HomeRoute() {
 						</span>
 						<span>Agentic Inbox</span>
 					</RouterLink>
-					<span className="text-xs text-kumo-subtle">多项目邮件工作台</span>
+					<nav className="directory-global-nav" aria-label="工作台导航">
+						<RouterLink to="/support">
+							<LifebuoyIcon size={17} />
+							客服处理
+						</RouterLink>
+						<span className="text-xs text-kumo-subtle">多项目邮件工作台</span>
+					</nav>
 				</div>
 			</header>
 			<div className="directory-workspace">

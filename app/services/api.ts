@@ -3,6 +3,11 @@
 //     https://opensource.org/licenses/Apache-2.0
 
 import type { Email, Folder, Mailbox } from "~/types";
+import type {
+	SupportCase,
+	SupportDashboard,
+	SupportEvent,
+} from "../../shared/support";
 
 const REQUEST_TIMEOUT_MS = 30_000;
 
@@ -18,10 +23,7 @@ export class ApiError extends Error {
 	}
 }
 
-async function request<T>(
-	url: string,
-	options: RequestInit = {},
-): Promise<T> {
+async function request<T>(url: string, options: RequestInit = {}): Promise<T> {
 	const controller = new AbortController();
 	const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
@@ -57,7 +59,14 @@ async function request<T>(
 	}
 }
 
-function get<T>(url: string, opts?: { params?: Record<string, string>; responseType?: string; signal?: AbortSignal }) {
+function get<T>(
+	url: string,
+	opts?: {
+		params?: Record<string, string>;
+		responseType?: string;
+		signal?: AbortSignal;
+	},
+) {
 	const query = opts?.params ? `?${new URLSearchParams(opts.params)}` : "";
 	return request<T>(`${url}${query}`, {
 		method: "GET",
@@ -95,6 +104,42 @@ interface EmailListResponse {
 // ---------- API client ----------
 
 const api = {
+	getSupportDashboard: (params: Record<string, string>, signal?: AbortSignal) =>
+		get<SupportDashboard>("/api/v1/support/dashboard", { params, signal }),
+	getSupportCase: (id: string, signal?: AbortSignal) =>
+		get<{ case: SupportCase; events: SupportEvent[] }>(
+			`/api/v1/support/cases/${encodeURIComponent(id)}`,
+			{ signal },
+		),
+	scanSupport: () =>
+		post<{ scanned: number; mailboxes: number; errors: string[] }>(
+			"/api/v1/support/scan",
+		),
+	supportInstruction: (item: SupportCase, text: string) =>
+		post<SupportCase>(
+			`/api/v1/support/cases/${encodeURIComponent(item.id)}/instructions`,
+			{
+				expectedVersion: item.version,
+				operationId: crypto.randomUUID(),
+				summary: text,
+			},
+		),
+	reconcileSupport: (
+		item: SupportCase,
+		result: {
+			outcome: "accepted" | "failed";
+			evidence: string;
+			providerMessageId?: string;
+		},
+	) =>
+		post<SupportCase>(
+			`/api/v1/support/cases/${encodeURIComponent(item.id)}/reconcile`,
+			{
+				...result,
+				expectedVersion: item.version,
+				operationId: crypto.randomUUID(),
+			},
+		),
 	// Config
 	getConfig: () =>
 		get<{ domains: string[]; emailAddresses: string[] }>("/api/v1/config"),
@@ -111,24 +156,44 @@ const api = {
 		del<void>(`/api/v1/mailboxes/${mailboxId}`),
 
 	// Emails
-	listEmails: (mailboxId: string, params: Record<string, string>, opts?: { signal?: AbortSignal }) =>
-		get<EmailListResponse | Email[]>(`/api/v1/mailboxes/${mailboxId}/emails`, { params, signal: opts?.signal }),
+	listEmails: (
+		mailboxId: string,
+		params: Record<string, string>,
+		opts?: { signal?: AbortSignal },
+	) =>
+		get<EmailListResponse | Email[]>(`/api/v1/mailboxes/${mailboxId}/emails`, {
+			params,
+			signal: opts?.signal,
+		}),
 	sendEmail: (mailboxId: string, email: unknown) =>
 		post<void>(`/api/v1/mailboxes/${mailboxId}/emails`, email),
 	getEmail: (mailboxId: string, id: string, opts?: { signal?: AbortSignal }) =>
-		get<Email>(`/api/v1/mailboxes/${mailboxId}/emails/${id}`, { signal: opts?.signal }),
+		get<Email>(`/api/v1/mailboxes/${mailboxId}/emails/${id}`, {
+			signal: opts?.signal,
+		}),
 	updateEmail: (mailboxId: string, id: string, data: unknown) =>
 		put<Email>(`/api/v1/mailboxes/${mailboxId}/emails/${id}`, data),
 	deleteEmail: (mailboxId: string, id: string) =>
 		del<void>(`/api/v1/mailboxes/${mailboxId}/emails/${id}`),
 	moveEmail: (mailboxId: string, id: string, folderId: string) =>
-		post<void>(`/api/v1/mailboxes/${mailboxId}/emails/${id}/move`, { folderId }),
-	getThread: (mailboxId: string, threadId: string, opts?: { signal?: AbortSignal }) =>
-		get<Email[]>(`/api/v1/mailboxes/${mailboxId}/threads/${threadId}`, { signal: opts?.signal }),
+		post<void>(`/api/v1/mailboxes/${mailboxId}/emails/${id}/move`, {
+			folderId,
+		}),
+	getThread: (
+		mailboxId: string,
+		threadId: string,
+		opts?: { signal?: AbortSignal },
+	) =>
+		get<Email[]>(`/api/v1/mailboxes/${mailboxId}/threads/${threadId}`, {
+			signal: opts?.signal,
+		}),
 	markThreadRead: (mailboxId: string, threadId: string) =>
 		post<void>(`/api/v1/mailboxes/${mailboxId}/threads/${threadId}/read`),
 	getAttachment: (mailboxId: string, emailId: string, attachmentId: string) =>
-		get<Blob>(`/api/v1/mailboxes/${mailboxId}/emails/${emailId}/attachments/${attachmentId}`, { responseType: "blob" }),
+		get<Blob>(
+			`/api/v1/mailboxes/${mailboxId}/emails/${emailId}/attachments/${attachmentId}`,
+			{ responseType: "blob" },
+		),
 	saveDraft: (
 		mailboxId: string,
 		draft: {
@@ -141,11 +206,15 @@ const api = {
 			thread_id?: string;
 			draft_id?: string;
 		},
-	) => post<{ draft_id: string }>(`/api/v1/mailboxes/${mailboxId}/drafts`, draft),
+	) =>
+		post<{ draft_id: string }>(`/api/v1/mailboxes/${mailboxId}/drafts`, draft),
 	replyToEmail: (mailboxId: string, emailId: string, email: unknown) =>
 		post<void>(`/api/v1/mailboxes/${mailboxId}/emails/${emailId}/reply`, email),
 	forwardEmail: (mailboxId: string, emailId: string, email: unknown) =>
-		post<void>(`/api/v1/mailboxes/${mailboxId}/emails/${emailId}/forward`, email),
+		post<void>(
+			`/api/v1/mailboxes/${mailboxId}/emails/${emailId}/forward`,
+			email,
+		),
 
 	// Folders
 	listFolders: (mailboxId: string) =>
@@ -159,7 +228,9 @@ const api = {
 
 	// Search
 	searchEmails: (mailboxId: string, params: Record<string, string>) =>
-		get<EmailListResponse | Email[]>(`/api/v1/mailboxes/${mailboxId}/search`, { params }),
+		get<EmailListResponse | Email[]>(`/api/v1/mailboxes/${mailboxId}/search`, {
+			params,
+		}),
 };
 
 export default api;

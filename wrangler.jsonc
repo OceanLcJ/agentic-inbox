@@ -20,6 +20,7 @@
 	"send_email": [
 		{
 			"name": "EMAIL",
+			"allowed_sender_addresses": ["support@195-0.com","support@2k27.org","support@38-0.games","support@ai-hairstyle.org","support@aigenmusic.com","reply@aigenmusic.com","hello@alldailygames.com","support@attractivenesstestlab.com","support@babyboogey.com","support@ballfight.cc","notifications@foyria.com","billing@foyria.com","hello@foyria.com","support@foyria.com","support@heartopia-codes.com","support@khajiitnamegenerator.xyz","support@krea2.online","support@krillion.live","support@lifeimmaculategrid.com","support@living-the-grid.net","support@mangatrans.org","support@moviespot.org","support@mp3totranscript.com","support@outstanding-tiny-desk.com","support@pagerage.org","support@palworldchromite.com","support@photo2ads.com","support@playnoillirk.com","support@poople.top","support@rain-dance-ai.com","support@revolutionidle.org","admin@scenemio.com","support@scenemio.com","support@size-it-up.org","support@soundtools.online","support@tagmint.app","support@tavernlantern.com","support@tinyeden.org","support@topview-t1.org","support@triviadrift.com","support@tuvimo.com","support@volume-shader.org","contact@web-harmonium.online","support@whatbrandonthinks.net","support@wonderhop.org","support@yournameinlandsat.online"],
 			"remote": true
 		}
 	],
@@ -46,6 +47,10 @@
 			{
 				"name": "EMAIL_MCP",
 				"class_name": "EmailMCP"
+			},
+			{
+				"name": "SUPPORT_DESK",
+				"class_name": "SupportDeskDO"
 			}
 		]
 	},
@@ -67,6 +72,10 @@
 			"new_sqlite_classes": [
 				"EmailMCP"
 			]
+		},
+		{
+			"tag": "v4-support-desk",
+			"new_sqlite_classes": ["SupportDeskDO"]
 		}
 	]
 }

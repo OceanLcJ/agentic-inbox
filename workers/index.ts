@@ -7,6 +7,7 @@ import { cors } from "hono/cors";
 import PostalMime from "postal-mime";
 import { z } from "zod";
 import { sendEmail } from "./email-sender";
+import { supportDesk } from "./lib/support-client";
 import { storeAttachments, type StoredAttachment } from "./lib/attachments";
 import {
 	validateSender,
@@ -403,6 +404,13 @@ async function receiveEmail(event: InboundMessage, env: Env, ctx: ExecutionConte
 		in_reply_to: inReplyTo, email_references: emailReferences.length > 0 ? JSON.stringify(emailReferences) : null,
 		thread_id: threadId, message_id: originalMessageId, raw_headers: JSON.stringify(parsedEmail.headers),
 	}, attachmentData);
+
+	if (env.SUPPORT_DESK) {
+		ctx.waitUntil(supportDesk(env).registerInbound({
+			mailboxId, threadId, emailId: messageId, subject: parsedEmail.subject || "",
+			sender: (parsedEmail.from?.address || event.from || "").toLowerCase(), date: new Date().toISOString(),
+		}).catch((error) => console.error("Support intake registration failed:", (error as Error).message)));
+	}
 
 	if (String(env.AUTO_DRAFT_ENABLED) === "true") {
 		const agentStub = env.EMAIL_AGENT.get(env.EMAIL_AGENT.idFromName(mailboxId));
