@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';
+import { execFileSync, spawn } from 'node:child_process';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { getAccessHeaders, inboxUrl } from './access-headers.mjs';
@@ -102,7 +103,29 @@ async function main() {
   }
   console.log(JSON.stringify(result, null, 2));
 }
+async function runWithSystemProxy() {
+  // GUI schedulers do not inherit a terminal's proxy variables. Node needs the
+  // macOS HTTPS proxy in its startup environment, so re-exec this CLI once.
+  if (process.platform !== 'darwin' || process.env.HTTPS_PROXY || process.env.https_proxy || process.env.SUPPORT_SYSTEM_PROXY_APPLIED) return false;
+  let settings;
+  try { settings = execFileSync('/usr/sbin/scutil', ['--proxy'], { encoding: 'utf8', timeout: 3000 }); }
+  catch { return false; }
+  const value = (key) => settings.match(new RegExp(`^\\s*${key}\\s*:\\s*(\\S+)\\s*$`, 'm'))?.[1];
+  const host = value('HTTPSProxy');
+  const port = Number(value('HTTPSPort'));
+  if (value('HTTPSEnable') !== '1' || !host || !Number.isInteger(port) || port < 1 || port > 65535) return false;
+  const proxy = new URL(`http://${host.includes(':') && !host.startsWith('[') ? `[${host}]` : host}:${port}`).origin;
+  process.exitCode = await new Promise((accept, reject) => {
+    const child = spawn(process.execPath, [fileURLToPath(import.meta.url), ...process.argv.slice(2)], {
+      stdio: 'inherit',
+      env: { ...process.env, HTTPS_PROXY: proxy, NODE_USE_ENV_PROXY: '1', SUPPORT_SYSTEM_PROXY_APPLIED: '1' },
+    });
+    child.once('error', reject);
+    child.once('exit', (code) => accept(code ?? 1));
+  });
+  return true;
+}
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  try { await main(); }
+  try { if (!await runWithSystemProxy()) await main(); }
   catch (error) { console.error(JSON.stringify({ error: error.message, status: error.status, result: error.result })); process.exitCode = 1; }
 }

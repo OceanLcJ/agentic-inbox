@@ -4,7 +4,7 @@ The operator authorized an hourly check of the configured Inbox mailboxes, ordin
 
 ## Start each run
 
-1. Work from the `agentic-inbox` checkout. Use the current Node executable with `NODE_USE_ENV_PROXY=1` for requests. Run `node scripts/support-agent.mjs scan`, then `run-start` to acquire the shared run lease. A conflict means another run is active: stop without sending mail.
+1. Work from the `agentic-inbox` checkout. Use the current Node executable with `NODE_USE_ENV_PROXY=1` for requests. On macOS the CLI also reads the system HTTPS proxy when a GUI scheduler has no terminal proxy variables; explicit HTTPS proxy variables take precedence. Run `node scripts/support-agent.mjs scan`, then `run-start` to acquire the shared run lease. A conflict means another run is active: stop without sending mail.
 2. If authentication or scanning fails, inspect `.local-setup/support-automation/precheck.json`, report the specific operational problem to the operator, run `ack-error`, and stop. Never print or read service credential values into the conversation. Do not create or rotate credentials automatically.
 3. Read `dashboard pending` and `dashboard processing`. An old processing claim is not permission to resend; investigate the previous events and delivery state. Record an unresolved interrupted operation as `needs_owner`.
 4. Before acting on a case, run `case CASE_ID` to read its entire thread and timeline, including owner instructions. Check for replies already sent through the website, mailbox or original business system. Claim it with `claim CASE_ID`; use the returned version and claim ID. Refresh the case before any subsequent state-changing action.
