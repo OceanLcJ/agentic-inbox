@@ -9,10 +9,12 @@ import { createRequestHandler } from "react-router";
 import { app as apiApp, receiveEmail } from "./index";
 import { EmailMCP } from "./mcp";
 import type { Env } from "./types";
+import type { InboundMessage } from "./lib/inbound";
 
 export { MailboxDO } from "./durableObject";
 export { EmailAgent } from "./agent";
 export { EmailMCP } from "./mcp";
+export { InboxArchive } from "./archive";
 
 declare module "react-router" {
 	export interface AppLoadContext {
@@ -111,7 +113,7 @@ app.all("*", (c) => {
 export default {
 	fetch: app.fetch,
 	async email(
-		event: { raw: ReadableStream; rawSize: number },
+		event: InboundMessage,
 		env: Env,
 		ctx: ExecutionContext,
 	) {

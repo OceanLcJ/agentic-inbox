@@ -3,25 +3,631 @@
 @import "tailwindcss";
 
 body {
-  margin: 0;
+	margin: 0;
 }
 
 /* TipTap list styles */
 .ProseMirror ul {
-  list-style-type: disc;
-  padding-left: 1.5em;
-  margin-top: 0.5em;
-  margin-bottom: 0.5em;
+	list-style-type: disc;
+	padding-left: 1.5em;
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
 }
 
 .ProseMirror ol {
-  list-style-type: decimal;
-  padding-left: 1.5em;
-  margin-top: 0.5em;
-  margin-bottom: 0.5em;
+	list-style-type: decimal;
+	padding-left: 1.5em;
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
 }
 
 .ProseMirror li {
-  margin-top: 0.25em;
-  margin-bottom: 0.25em;
+	margin-top: 0.25em;
+	margin-bottom: 0.25em;
+}
+
+/* Mailbox directory: keep Kumo's surfaces and blue controls, give projects room. */
+.mailbox-directory {
+	--directory-muted: var(--text-color-kumo-strong);
+}
+.mailbox-directory ::selection,
+.mailbox-switch-dialog ::selection {
+	background: var(--color-kumo-info-tint);
+}
+.mailbox-directory :is(a, button, input):focus-visible,
+.mailbox-switch-trigger:focus-visible,
+.mailbox-switch-dialog :is(a, button, input):focus-visible {
+	outline: 2px solid var(--color-kumo-brand);
+	outline-offset: 3px;
+}
+.directory-topbar {
+	background: var(--color-kumo-base);
+	border-bottom: 1px solid var(--color-kumo-line);
+}
+.directory-topbar-inner {
+	max-width: 1280px;
+	min-height: 68px;
+	padding: 0 32px;
+	margin: auto;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 20px;
+}
+.directory-brand {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	font-size: 16px;
+	font-weight: 650;
+	text-decoration: none;
+}
+.directory-brand-icon {
+	display: grid;
+	place-items: center;
+	width: 32px;
+	height: 32px;
+	border-radius: 8px;
+	background: var(--color-kumo-brand);
+	color: white;
+}
+.directory-workspace {
+	max-width: 1280px;
+	margin: 0 auto;
+	padding: 44px 32px 48px;
+	display: grid;
+	grid-template-columns: 190px minmax(0, 1fr);
+	gap: 48px;
+	align-items: start;
+}
+.directory-navigation {
+	position: sticky;
+	top: 32px;
+	padding-top: 3px;
+}
+.directory-views {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+.directory-view {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 11px 12px;
+	border-radius: 7px;
+	font-size: 14px;
+	color: var(--text-color-kumo-strong);
+	cursor: pointer;
+	white-space: nowrap;
+}
+.directory-view:hover {
+	background: var(--color-kumo-tint);
+}
+.directory-view[aria-current="page"] {
+	background: var(--color-kumo-base);
+	color: var(--text-color-kumo-link);
+	font-weight: 600;
+}
+.directory-view-count {
+	margin-left: auto;
+	font-size: 12px;
+	font-variant-numeric: tabular-nums;
+	color: var(--text-color-kumo-strong);
+}
+.directory-personal-note {
+	color: var(--directory-muted);
+	font-size: 12px;
+	line-height: 1.8;
+	padding: 24px 12px;
+}
+.directory-heading {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	margin-bottom: 26px;
+}
+.directory-heading h1 {
+	font-size: 28px;
+	line-height: 1.3;
+	letter-spacing: -0.025em;
+	font-weight: 650;
+}
+.directory-heading p {
+	color: var(--directory-muted);
+	margin-top: 8px;
+	font-size: 14px;
+}
+.directory-search-row {
+	margin-bottom: 24px;
+}
+.directory-search {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	width: 100%;
+	min-height: 46px;
+	padding: 0 14px;
+	border: 1px solid var(--color-kumo-line);
+	border-radius: 8px;
+	background: var(--color-kumo-base);
+	color: var(--text-color-kumo-strong);
+}
+.directory-search:focus-within {
+	border-color: var(--color-kumo-brand);
+}
+.directory-search input {
+	min-width: 0;
+	width: 100%;
+	background: transparent;
+	padding: 12px 0;
+	border: 0;
+	font-size: 14px;
+	color: var(--text-color-kumo-default);
+	caret-color: var(--color-kumo-brand);
+	outline: none !important;
+}
+.directory-search input::placeholder {
+	color: var(--text-color-kumo-strong);
+}
+.directory-search input::-webkit-search-cancel-button {
+	display: none;
+}
+.directory-search > svg {
+	flex-shrink: 0;
+}
+.directory-search button {
+	padding: 6px;
+	cursor: pointer;
+	border-radius: 4px;
+}
+.directory-search button:hover {
+	background: var(--color-kumo-tint);
+}
+.directory-search kbd {
+	display: grid;
+	place-items: center;
+	min-width: 22px;
+	height: 22px;
+	border: 1px solid var(--color-kumo-line);
+	border-radius: 4px;
+	font-size: 12px;
+	font-family: inherit;
+}
+.directory-list {
+	background: var(--color-kumo-base);
+	border: 1px solid var(--color-kumo-line);
+	border-radius: 10px;
+	overflow: hidden;
+}
+.directory-list-heading,
+.directory-project {
+	display: grid;
+	grid-template-columns: minmax(210px, 1fr) minmax(0, 1.05fr);
+	align-items: center;
+	gap: 24px;
+	padding: 0 22px;
+}
+.directory-list-heading {
+	min-height: 42px;
+	color: var(--text-color-kumo-strong);
+	background: var(--color-kumo-recessed);
+	font-size: 12px;
+}
+.directory-project {
+	min-height: 68px;
+	border-top: 1px solid var(--color-kumo-line);
+	padding-top: 12px;
+	padding-bottom: 12px;
+}
+.directory-project-name {
+	min-width: 0;
+}
+.directory-project-name h2 {
+	font-size: 14px;
+	font-weight: 600;
+	overflow-wrap: anywhere;
+}
+.directory-project-name > span {
+	display: block;
+	margin-top: 3px;
+	font-size: 12px;
+	color: var(--directory-muted);
+}
+.directory-project-accounts {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px 16px;
+	min-width: 0;
+}
+.directory-account {
+	display: inline-flex;
+	align-items: center;
+	max-width: 100%;
+	gap: 2px;
+}
+.directory-account-link {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	min-height: 36px;
+	padding: 6px 8px;
+	margin-left: -8px;
+	border-radius: 6px;
+	font-size: 13px;
+	color: var(--text-color-kumo-link);
+	text-decoration: none;
+}
+.directory-account-link:hover {
+	background: var(--color-kumo-recessed);
+}
+.directory-account-envelope {
+	color: var(--text-color-kumo-strong);
+}
+.directory-account-arrow {
+	opacity: 0;
+	transition: opacity 120ms ease-out;
+}
+.directory-account-link:is(:hover, :focus-visible) .directory-account-arrow {
+	opacity: 1;
+}
+.directory-pin {
+	display: grid;
+	place-items: center;
+	width: 32px;
+	height: 36px;
+	border-radius: 6px;
+	color: var(--text-color-kumo-strong);
+	cursor: pointer;
+	flex-shrink: 0;
+}
+.directory-pin:hover {
+	background: var(--color-kumo-recessed);
+	color: var(--text-color-kumo-default);
+}
+.directory-pin[aria-pressed="true"] {
+	color: var(--text-color-kumo-link);
+	background: var(--color-kumo-recessed);
+}
+.directory-empty {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 12px;
+	padding: 64px 24px;
+	text-align: center;
+	background: var(--color-kumo-base);
+	border-radius: 10px;
+	border: 1px solid var(--color-kumo-line);
+}
+.directory-empty h2 {
+	font-size: 17px;
+	font-weight: 600;
+}
+.directory-empty p {
+	font-size: 14px;
+	line-height: 1.7;
+	max-width: 42ch;
+	color: var(--directory-muted);
+	overflow-wrap: anywhere;
+}
+.directory-empty-icon {
+	color: var(--directory-muted);
+	margin-bottom: 4px;
+}
+.directory-result-count {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: 8px;
+	padding: 0 2px 12px;
+	color: var(--directory-muted);
+	font-size: 12px;
+	font-variant-numeric: tabular-nums;
+}
+.mailbox-directory .text-kumo-subtle {
+	color: var(--directory-muted);
+}
+.mailbox-switch-trigger {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	width: 100%;
+	padding: 9px 8px;
+	margin-left: -4px;
+	border-radius: 6px;
+	cursor: pointer;
+}
+.mailbox-switch-trigger:hover {
+	background: var(--color-kumo-tint);
+}
+.mailbox-switch-dialog {
+	width: min(480px, calc(100vw - 32px));
+}
+.mailbox-switch-results {
+	max-height: min(430px, 55dvh);
+	overflow-y: auto;
+	border-top: 1px solid var(--color-kumo-line);
+	padding: 6px;
+	scrollbar-width: thin;
+	scrollbar-color: var(--color-kumo-interact) transparent;
+}
+.mailbox-switch-option {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 12px 14px;
+	color: var(--text-color-kumo-default);
+	text-decoration: none;
+	font-size: 14px;
+	border-radius: 6px;
+}
+.mailbox-switch-option:hover,
+.mailbox-switch-option[aria-current="page"] {
+	background: var(--color-kumo-recessed);
+}
+@media (max-width: 1050px) {
+	.directory-workspace {
+		gap: 28px;
+		grid-template-columns: 170px minmax(0, 1fr);
+	}
+	.directory-list-heading,
+	.directory-project {
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+		gap: 20px;
+		padding-left: 18px;
+		padding-right: 18px;
+	}
+}
+@media (max-width: 760px) {
+	.directory-topbar-inner {
+		min-height: 60px;
+		padding: 0 20px;
+	}
+	.directory-topbar-inner > span {
+		display: none;
+	}
+	.directory-workspace {
+		display: flex;
+		flex-direction: column;
+		gap: 28px;
+		padding: 24px 20px 32px;
+	}
+	.directory-navigation {
+		position: static;
+		padding: 0;
+		width: 100%;
+	}
+	.directory-views {
+		flex-direction: row;
+		gap: 4px;
+		border-bottom: 1px solid var(--color-kumo-line);
+		padding-bottom: 12px;
+	}
+	.directory-view {
+		padding: 9px 10px;
+		gap: 7px;
+		flex: 1;
+		justify-content: center;
+		font-size: 13px;
+	}
+	.directory-view-count {
+		margin-left: 0;
+		font-size: 11px;
+	}
+	.directory-personal-note {
+		display: none;
+	}
+	.directory-main {
+		width: 100%;
+		min-width: 0;
+	}
+	.directory-heading {
+		margin-bottom: 20px;
+	}
+	.directory-heading h1 {
+		font-size: 24px;
+	}
+	.directory-list-heading {
+		display: none;
+	}
+	.directory-project {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 8px;
+		padding: 14px 16px;
+		min-height: 90px;
+	}
+	.directory-project:first-child {
+		border-top: 0;
+	}
+	.directory-project-name {
+		display: flex;
+		align-items: baseline;
+		gap: 8px;
+		flex-wrap: wrap;
+	}
+	.directory-project-name h2 {
+		font-size: 14px;
+	}
+	.directory-project-name > span {
+		margin: 0;
+	}
+	.directory-project-accounts {
+		column-gap: 16px;
+	}
+	.directory-pin {
+		width: 36px;
+		min-height: 38px;
+	}
+	.directory-account-link {
+		min-height: 38px;
+	}
+	.directory-search-row {
+		margin-bottom: 18px;
+	}
+	.directory-search {
+		padding: 0 12px;
+		gap: 8px;
+	}
+	.directory-search kbd {
+		display: none;
+	}
+	.directory-empty {
+		padding: 48px 20px;
+	}
+}
+@media (prefers-reduced-motion: reduce) {
+	.directory-account-arrow {
+		transition: none;
+	}
+}
+
+.directory-account,
+.directory-account-link,
+.directory-account-link > span {
+	min-width: 0;
+}
+.directory-account-link > span {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.directory-account-link > svg {
+	flex-shrink: 0;
+}
+@media (max-width: 400px) {
+	.directory-view {
+		padding: 9px 8px;
+		gap: 6px;
+	}
+	.directory-view > svg {
+		display: none;
+	}
+}
+
+.directory-shortcut-views {
+	margin-top: 20px;
+	padding-top: 20px;
+	border-top: 1px solid var(--color-kumo-line);
+}
+.directory-pagination {
+	padding: 18px 0;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 16px;
+	color: var(--text-color-kumo-strong);
+	font-size: 12px;
+	font-variant-numeric: tabular-nums;
+}
+.directory-pagination-summary {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 12px 20px;
+}
+.directory-pagination-summary label {
+	white-space: nowrap;
+}
+.directory-pagination select {
+	background: var(--color-kumo-base);
+	border: 1px solid var(--color-kumo-line);
+	border-radius: 5px;
+	padding: 6px;
+	margin: 0 4px;
+	color: var(--text-color-kumo-default);
+	cursor: pointer;
+}
+.directory-page-controls,
+.directory-page-item {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+.directory-page-controls button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+	min-width: 34px;
+	min-height: 36px;
+	padding: 6px 9px;
+	border-radius: 6px;
+	cursor: pointer;
+}
+.directory-page-controls button:hover:not(:disabled) {
+	background: var(--color-kumo-base);
+}
+.directory-page-controls button[aria-current="page"] {
+	background: var(--color-kumo-base);
+	color: var(--text-color-kumo-link);
+	font-weight: 600;
+}
+.directory-page-controls button:disabled {
+	opacity: 0.45;
+	cursor: default;
+}
+.directory-page-gap {
+	padding: 0 2px;
+}
+.directory-search-row {
+	margin-bottom: 12px;
+}
+@media (max-width: 760px) {
+	.directory-category-views {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		padding: 0;
+		border: 0;
+		gap: 6px;
+	}
+	.directory-category-views .directory-view {
+		justify-content: flex-start;
+	}
+	.directory-category-views .directory-view-count {
+		margin-left: auto;
+	}
+	.directory-shortcut-views {
+		margin-top: 12px;
+		padding: 10px 0 0;
+		border-bottom: 0;
+	}
+	.directory-project-name {
+		display: block;
+	}
+	.directory-project-name > span {
+		margin-top: 3px;
+	}
+	.directory-pagination-summary {
+		width: 100%;
+		justify-content: space-between;
+		gap: 12px;
+	}
+	.directory-page-controls {
+		width: 100%;
+		justify-content: center;
+	}
+	.directory-page-controls button {
+		min-height: 40px;
+	}
+}
+@media (max-width: 400px) {
+	.directory-page-controls > button > span {
+		display: none;
+	}
+}
+
+/* Keep the switcher and its backdrop above the mobile navigation drawer. */
+:has(> .mailbox-switch-dialog) {
+	position: relative;
+	z-index: 60;
+}
+.mailbox-directory select:focus-visible,
+.directory-heading h1:focus-visible {
+	outline: 2px solid var(--color-kumo-brand);
+	outline-offset: 4px;
 }

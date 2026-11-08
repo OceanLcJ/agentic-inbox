@@ -20,6 +20,7 @@ import { Folders, SYSTEM_FOLDER_IDS } from "shared/folders";
 import { useCreateFolder, useFolders } from "~/queries/folders";
 import { useMailbox } from "~/queries/mailboxes";
 import { useUIStore } from "~/hooks/useUIStore";
+import MailboxSwitcher from "~/components/MailboxSwitcher";
 
 const FOLDER_ICONS: Record<string, React.ReactNode> = {
 	[Folders.INBOX]: <TrayIcon size={18} weight="regular" />,
@@ -30,11 +31,11 @@ const FOLDER_ICONS: Record<string, React.ReactNode> = {
 };
 
 const SYSTEM_FOLDER_LINKS = [
-	{ id: Folders.INBOX, label: "Inbox" },
-	{ id: Folders.SENT, label: "Sent" },
-	{ id: Folders.DRAFT, label: "Drafts" },
-	{ id: Folders.ARCHIVE, label: "Archive" },
-	{ id: Folders.TRASH, label: "Trash" },
+	{ id: Folders.INBOX, label: "收件箱" },
+	{ id: Folders.SENT, label: "已发送" },
+	{ id: Folders.DRAFT, label: "草稿箱" },
+	{ id: Folders.ARCHIVE, label: "归档" },
+	{ id: Folders.TRASH, label: "废纸篓" },
 ];
 
 interface FolderLinkProps {
@@ -85,7 +86,9 @@ export default function Sidebar() {
 
 	const customFolders = useMemo(
 		() =>
-			folders.filter((f) => !(SYSTEM_FOLDER_IDS as readonly string[]).includes(f.id)),
+			folders.filter(
+				(f) => !(SYSTEM_FOLDER_IDS as readonly string[]).includes(f.id),
+			),
 		[folders],
 	);
 
@@ -133,16 +136,13 @@ export default function Sidebar() {
 					className="flex items-center gap-1.5 text-kumo-subtle text-sm hover:text-kumo-default transition-colors mb-2.5 cursor-pointer bg-transparent border-0 p-0"
 				>
 					<CaretLeftIcon size={14} />
-					<span>Mailboxes</span>
+					<span>全部邮箱</span>
 				</button>
-				<div className="px-1">
-					<div className="text-base font-semibold text-kumo-default truncate">
-						{displayName}
-					</div>
-					<div className="text-sm text-kumo-subtle truncate mt-0.5">
-						{currentMailbox?.email || mailboxId}
-					</div>
-				</div>
+				<MailboxSwitcher
+					mailboxId={mailboxId}
+					displayName={displayName}
+					email={currentMailbox?.email}
+				/>
 			</div>
 
 			{/* Compose */}
@@ -153,7 +153,7 @@ export default function Sidebar() {
 					onClick={() => startCompose()}
 					className="w-full"
 				>
-					Compose
+					写邮件
 				</Button>
 			</div>
 
@@ -175,16 +175,16 @@ export default function Sidebar() {
 					<div className="pt-5">
 						<div className="flex items-center justify-between px-3 mb-1.5">
 							<span className="text-xs uppercase tracking-wider font-semibold text-kumo-subtle">
-								Folders
+								文件夹
 							</span>
-							<Tooltip content="New folder" asChild>
+							<Tooltip content="新建文件夹" asChild>
 								<Button
 									variant="ghost"
 									shape="square"
 									size="sm"
 									icon={<PlusIcon size={16} />}
 									onClick={() => setIsCreateFolderOpen(true)}
-									aria-label="Create new folder"
+									aria-label="创建文件夹"
 								/>
 							</Tooltip>
 						</div>
@@ -206,16 +206,16 @@ export default function Sidebar() {
 					<div className="pt-5">
 						<div className="flex items-center justify-between px-3 mb-1.5">
 							<span className="text-xs uppercase tracking-wider font-semibold text-kumo-subtle">
-								Folders
+								文件夹
 							</span>
-							<Tooltip content="New folder" asChild>
+							<Tooltip content="新建文件夹" asChild>
 								<Button
 									variant="ghost"
 									shape="square"
 									size="sm"
 									icon={<PlusIcon size={16} />}
 									onClick={() => setIsCreateFolderOpen(true)}
-									aria-label="Create new folder"
+									aria-label="创建文件夹"
 								/>
 							</Tooltip>
 						</div>
@@ -223,19 +223,19 @@ export default function Sidebar() {
 				)}
 			</nav>
 
-			{/* Create folder dialog */}
+			{/* 创建文件夹 dialog */}
 			<Dialog.Root
 				open={isCreateFolderOpen}
 				onOpenChange={setIsCreateFolderOpen}
 			>
 				<Dialog size="sm" className="p-6">
 					<Dialog.Title className="text-base font-semibold mb-4">
-						Create folder
+						创建文件夹
 					</Dialog.Title>
 					<form onSubmit={handleCreateFolder} className="space-y-4">
 						<Input
-							label="Folder name"
-							placeholder="e.g. Projects"
+							label="文件夹名称"
+							placeholder="例如：项目合作"
 							value={newFolderName}
 							onChange={(e) => setNewFolderName(e.target.value)}
 							required
@@ -244,7 +244,7 @@ export default function Sidebar() {
 							<Dialog.Close
 								render={(props) => (
 									<Button {...props} variant="secondary">
-										Cancel
+										取消
 									</Button>
 								)}
 							/>
@@ -253,7 +253,7 @@ export default function Sidebar() {
 								variant="primary"
 								disabled={!newFolderName.trim()}
 							>
-								Create
+								创建
 							</Button>
 						</div>
 					</form>

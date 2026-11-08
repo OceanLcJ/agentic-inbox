@@ -20,6 +20,11 @@ import { handleReplyEmail, handleForwardEmail } from "./routes/reply-forward";
 import { Folders } from "../shared/folders";
 import type { Env } from "./types";
 import { requireMailbox, type MailboxContext } from "./lib/mailbox";
+import {
+	forwardInboundMessage,
+	resolveInboundMailbox,
+	type InboundMessage,
+} from "./lib/inbound";
 
 type AppContext = Context<MailboxContext>;
 
@@ -342,31 +347,28 @@ async function streamToArrayBuffer(stream: ReadableStream, streamSize: number) {
 		result.set(value, bytesRead);
 		bytesRead += value.length;
 	}
+	if (bytesRead !== streamSize) throw new Error("Email stream was truncated");
 	return result;
 }
 
-async function receiveEmail(event: { raw: ReadableStream; rawSize: number }, env: Env, ctx: ExecutionContext) {
+async function receiveEmail(event: InboundMessage, env: Env, ctx: ExecutionContext, options: { archiveOnly?: boolean } = {}) {
+	const mailboxId = resolveInboundMailbox(event.to, (env.EMAIL_ADDRESSES ?? []) as string[]);
+	if (!mailboxId) throw new Error("No configured mailbox for envelope recipient");
+	const mailbox = await env.BUCKET.get(`mailboxes/${mailboxId}.json`);
+	if (!mailbox) throw new Error(`Mailbox does not exist: ${mailboxId}`);
+	const settings = await mailbox.json<{ forwarding?: { enabled?: boolean; email?: string } }>();
 	const rawEmail = await streamToArrayBuffer(event.raw, event.rawSize);
 	const parsedEmail = await new PostalMime().parse(rawEmail);
-
-	if (!parsedEmail.to?.length || !parsedEmail.to[0].address) throw new Error("received email with empty to");
-
-	const allowedAddresses = ((env.EMAIL_ADDRESSES ?? []) as string[]).map((a) => a.toLowerCase());
-	const allRecipients = parsedEmail.to.map((t) => t.address?.toLowerCase()).filter(Boolean) as string[];
 	const ccRecipients = (parsedEmail.cc || []).map((e) => e.address?.toLowerCase()).filter(Boolean) as string[];
 	const bccRecipients = (parsedEmail.bcc || []).map((e) => e.address?.toLowerCase()).filter(Boolean) as string[];
 
-	let mailboxId: string | undefined;
-	if (allowedAddresses.length > 0) {
-		mailboxId = allRecipients.find((addr) => allowedAddresses.includes(addr));
-		if (!mailboxId) { console.log(`Ignoring email: no recipient matches EMAIL_ADDRESSES.`); return; }
-	} else { mailboxId = allRecipients[0]; }
-	if (!mailboxId) throw new Error("received email with no valid recipient address");
-
-	const messageId = crypto.randomUUID();
-	if (!(await env.BUCKET.head(`mailboxes/${mailboxId}.json`))) { console.log(`Ignoring email for ${mailboxId}: mailbox does not exist`); return; }
-
+	// The SMTP recipient determines the mailbox, including Bcc and plus addresses.
+	// Headers can contain other managed mailboxes and must never select the inbox.
+	if (!options.archiveOnly) await forwardInboundMessage(event, mailboxId, settings);
+	const digest = await crypto.subtle.digest("SHA-256", rawEmail);
+	const messageId = [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, "0")).join("");
 	const stub = env.MAILBOX.get(env.MAILBOX.idFromName(mailboxId));
+	if (await stub.getEmail(messageId)) return { status: "duplicate", mailboxId, id: messageId };
 
 	const attachmentData: StoredAttachment[] = [];
 	if (parsedEmail.attachments) {
@@ -394,7 +396,7 @@ async function receiveEmail(event: { raw: ReadableStream; rawSize: number }, env
 
 	await stub.createEmail(Folders.INBOX, {
 		id: messageId, subject: parsedEmail.subject || "",
-		sender: (parsedEmail.from?.address || "").toLowerCase(), recipient: allRecipients.join(", "),
+		sender: (parsedEmail.from?.address || event.from || "").toLowerCase(), recipient: event.to.toLowerCase(),
 		cc: ccRecipients.join(", ") || null, bcc: bccRecipients.join(", ") || null,
 		date: new Date().toISOString(), // uses receive time, not the email's Date header
 		body: parsedEmail.html || parsedEmail.text || "",
@@ -402,11 +404,14 @@ async function receiveEmail(event: { raw: ReadableStream; rawSize: number }, env
 		thread_id: threadId, message_id: originalMessageId, raw_headers: JSON.stringify(parsedEmail.headers),
 	}, attachmentData);
 
-	const agentStub = env.EMAIL_AGENT.get(env.EMAIL_AGENT.idFromName(mailboxId));
-	ctx.waitUntil(agentStub.fetch(new Request("https://agents/onNewEmail", {
+	if (String(env.AUTO_DRAFT_ENABLED) === "true") {
+		const agentStub = env.EMAIL_AGENT.get(env.EMAIL_AGENT.idFromName(mailboxId));
+		ctx.waitUntil(agentStub.fetch(new Request("https://agents/onNewEmail", {
 		method: "POST", headers: { "Content-Type": "application/json" },
 		body: JSON.stringify({ mailboxId, emailId: messageId, sender: (parsedEmail.from?.address || "").toLowerCase(), subject: parsedEmail.subject || "", threadId }),
-	})).catch((e) => console.error("Auto-draft trigger failed:", (e as Error).message)));
+		})).catch((e) => console.error("Auto-draft trigger failed:", (e as Error).message)));
+	}
+	return { status: "archived", mailboxId, id: messageId };
 }
 
 export { app, receiveEmail };

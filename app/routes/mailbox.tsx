@@ -10,11 +10,16 @@ import Header from "~/components/Header";
 import Sidebar from "~/components/Sidebar";
 import { useMailbox } from "~/queries/mailboxes";
 import { useUIStore } from "~/hooks/useUIStore";
+import { useMailboxPreferences } from "~/hooks/useMailboxPreferences";
 
 export default function MailboxRoute() {
 	const { mailboxId } = useParams<{ mailboxId: string }>();
 	// Prefetch mailbox data for child components
-	useMailbox(mailboxId);
+	const { data: currentMailbox } = useMailbox(mailboxId);
+	const { recordVisit } = useMailboxPreferences();
+	useEffect(() => {
+		if (currentMailbox?.id) recordVisit(currentMailbox.id);
+	}, [currentMailbox?.id, recordVisit]);
 	const prevMailboxIdRef = useRef<string | undefined>(undefined);
 	const {
 		isSidebarOpen,
